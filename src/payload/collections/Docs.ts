@@ -1,6 +1,5 @@
 import { CollectionConfig, RichTextField } from 'payload'
 
-import { adminAndEditor } from '@/payload/access'
 import { revalidateCache, revalidateCacheAfterDelete } from '@/payload/hooks/revalidate-cache'
 
 import {
@@ -34,12 +33,6 @@ export const Docs: CollectionConfig = {
       schedulePublish: true,
     },
     maxPerDoc: 10,
-  },
-  access: {
-    create: adminAndEditor,
-    read: adminAndEditor,
-    update: adminAndEditor,
-    delete: adminAndEditor,
   },
   fields: [
     {
