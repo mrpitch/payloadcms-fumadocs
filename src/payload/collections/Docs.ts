@@ -4,7 +4,6 @@ import { revalidateCache, revalidateCacheAfterDelete } from '@/payload/hooks/rev
 
 import {
   lexicalEditor,
-  convertLexicalToMarkdown,
   editorConfigFactory,
   HeadingFeature,
   ItalicFeature,
@@ -16,11 +15,9 @@ import {
   BlockquoteFeature,
   ParagraphFeature,
 } from '@payloadcms/richtext-lexical'
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 
 export const Docs: CollectionConfig = {
   slug: 'docs',
-  folders: true,
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'folder', 'slug', 'publishedAt', 'status'],
@@ -93,42 +90,6 @@ export const Docs: CollectionConfig = {
                   ]
                 },
               }),
-            },
-            {
-              name: 'markdown',
-              type: 'textarea',
-              admin: {
-                hidden: true,
-              },
-              hooks: {
-                afterRead: [
-                  ({ siblingData, siblingFields }) => {
-                    const data: SerializedEditorState = siblingData['copy']
-
-                    if (!data) {
-                      return ''
-                    }
-
-                    const markdown = convertLexicalToMarkdown({
-                      data,
-                      editorConfig: editorConfigFactory.fromField({
-                        field: siblingFields.find(
-                          (field) => 'name' in field && field.name === 'copy',
-                        ) as RichTextField,
-                      }),
-                    })
-
-                    return markdown
-                  },
-                ],
-                beforeChange: [
-                  ({ siblingData }) => {
-                    // Ensure that the markdown field is not saved in the database
-                    delete siblingData['markdown']
-                    return null
-                  },
-                ],
-              },
             },
           ],
         },

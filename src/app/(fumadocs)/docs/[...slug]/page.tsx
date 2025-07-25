@@ -2,12 +2,33 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { draftMode } from 'next/headers'
 
-import { getPayload } from 'payload'
-import config from '@payload-config'
-
 import { DocsPage, DocsBody, DocsDescription, DocsTitle } from 'fumadocs-ui/page'
 
 import { getCollectionBySlug, getSlugs } from '@/lib/utils/getCollection'
+
+import { RichText } from '@/components/richtext'
+import { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
+import { generateTocFromLexical, generateTocFromPayload } from '@/lib/utils/generateToc'
+import { generateMeta } from '@/lib/utils/generateMeta'
+
+type Args = {
+  params: Promise<{
+    slug?: string
+  }>
+}
+
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug } = await paramsPromise
+  const { isEnabled } = await draftMode()
+
+  const doc = await getCollectionBySlug({
+    collection: 'docs',
+    slug: slug || '',
+    draft: isEnabled,
+  })
+
+  return generateMeta({ doc: doc })
+}
 
 export async function generateStaticParams() {
   const docs = await getSlugs('docs')
@@ -20,44 +41,59 @@ export async function generateStaticParams() {
   )
 }
 
-type Args = {
-  params: Promise<{
-    slug?: string
-  }>
-}
-
-const payload = await getPayload({ config })
+// export const toc = [
+//   {
+//     title: 'Heading h2',
+//     depth: 2,
+//     url: '#heading-h2',
+//   },
+//   {
+//     title: 'Heading h3',
+//     depth: 3,
+//     url: '#heading-h3',
+//   },
+//   {
+//     title: 'Heading h4',
+//     depth: 4,
+//     url: '#heading-h4',
+//   },
+//   {
+//     title: 'Heading h5',
+//     depth: 5,
+//     url: '#heading-h5',
+//   },
+// ]
 
 export default async function Doc({ params: paramsPromise }: Args) {
   const { slug } = await paramsPromise
   const { isEnabled } = await draftMode()
   const page = await getCollectionBySlug({
     collection: 'docs',
-    slug: slug?.[0] || 'my-doc-example-1',
-    draft: false,
+    slug: slug?.[0] || '',
+    draft: isEnabled,
   })
 
-  // const page = await payload.find({
-  //   collection: 'docs',
-  //   depth: 3,
-  //   draft: false,
-  //   overrideAccess: true,
-  //   where: {
-  //     slug: {
-  //       equals: slug?.[0],
-  //     },
-  //   },
-  // })
   if (!page) {
     notFound()
   }
 
+  const toc = generateTocFromLexical(page?.copy as DefaultTypedEditorState)
+
   return (
-    <DocsPage toc={[]} full={false}>
+    <DocsPage
+      toc={toc}
+      full={false}
+      tableOfContent={{
+        single: true,
+        style: 'clerk',
+      }}
+    >
       <DocsTitle>{page?.title}</DocsTitle>
       <DocsDescription>{page?.excerpt}</DocsDescription>
       <DocsBody>
-        <pre>{JSON.stringify(page, null, 2)}</pre>
+        <RichText data={page?.copy as DefaultTypedEditorState} />
+
+        {/* <pre>{JSON.stringify(page?.copy, null, 2)}</pre> */}
       </DocsBody>
     </DocsPage>
   )
