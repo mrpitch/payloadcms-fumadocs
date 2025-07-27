@@ -11,6 +11,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Docs } from './collections/Docs'
 import { AppConfiguration } from './globals/AppConfiguration'
+import { Nav } from './globals/Nav'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  globals: [AppConfiguration],
+  globals: [AppConfiguration, Nav],
   collections: [Users, Media, Docs],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

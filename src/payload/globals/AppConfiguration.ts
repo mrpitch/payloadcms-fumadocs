@@ -100,6 +100,28 @@ export const AppConfiguration: GlobalConfig = {
             },
           ],
         },
+        {
+          name: 'playground',
+          label: 'Playground',
+          fields: [
+            {
+              name: 'myTest',
+              type: 'ui',
+              admin: {
+                components: {
+                  Field: {
+                    path: 'src/payload/components/test.tsx#Test',
+                    exportName: 'Test',
+                  },
+                },
+              },
+            },
+            {
+              name: 'jsonTest',
+              type: 'json',
+            },
+          ],
+        },
       ],
     },
     {

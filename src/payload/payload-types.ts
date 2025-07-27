@@ -7,6 +7,47 @@
  */
 
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NavLinksProps".
+ */
+export type NavLinksProps =
+  | {
+      name?: string | null;
+      linkType?: ('External' | 'Internal' | 'No Link') | null;
+      /**
+       * Should this open in a new browser window/tab?
+       */
+      openInNewTab?: ('Yes' | 'No') | null;
+      externalLink?: string | null;
+      link?: {
+        relationTo: 'docs';
+        value: number | Doc;
+      } | null;
+      nestedLinks?:
+        | {
+            navigationLink?:
+              | {
+                  name?: string | null;
+                  linkType?: ('External' | 'Internal') | null;
+                  /**
+                   * Should this open in a new browser window/tab?
+                   */
+                  openInNewTab?: ('Yes' | 'No') | null;
+                  externalLink?: string | null;
+                  link?: {
+                    relationTo: 'docs';
+                    value: number | Doc;
+                  } | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+          }[]
+        | null;
+      id?: string | null;
+    }[]
+  | null;
+/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -90,9 +131,11 @@ export interface Config {
   };
   globals: {
     'app-configuration': AppConfiguration;
+    nav: Nav;
   };
   globalsSelect: {
     'app-configuration': AppConfigurationSelect<false> | AppConfigurationSelect<true>;
+    nav: NavSelect<false> | NavSelect<true>;
   };
   locale: null;
   user: User & {
@@ -524,8 +567,29 @@ export interface AppConfiguration {
         }[]
       | null;
   };
+  playground?: {
+    jsonTest?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
   publishedAt?: string | null;
   _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "nav".
+ */
+export interface Nav {
+  id: number;
+  navLink?: NavLinksProps;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -580,11 +644,53 @@ export interface AppConfigurationSelect<T extends boolean = true> {
               id?: T;
             };
       };
+  playground?:
+    | T
+    | {
+        jsonTest?: T;
+      };
   publishedAt?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "nav_select".
+ */
+export interface NavSelect<T extends boolean = true> {
+  navLink?: T | NavLinksPropsSelect<T>;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NavLinksProps_select".
+ */
+export interface NavLinksPropsSelect<T extends boolean = true> {
+  name?: T;
+  linkType?: T;
+  openInNewTab?: T;
+  externalLink?: T;
+  link?: T;
+  nestedLinks?:
+    | T
+    | {
+        navigationLink?:
+          | T
+          | {
+              name?: T;
+              linkType?: T;
+              openInNewTab?: T;
+              externalLink?: T;
+              link?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
