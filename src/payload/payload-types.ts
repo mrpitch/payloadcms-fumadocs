@@ -554,14 +554,14 @@ export interface AppConfiguration {
     navItems?:
       | {
           link: {
-            type?: ('reference' | 'custom') | null;
+            type?: ('reference' | 'nolink' | 'external') | null;
             newTab?: boolean | null;
+            label: string;
             reference?: {
               relationTo: 'docs';
               value: number | Doc;
             } | null;
             url?: string | null;
-            label: string;
           };
           id?: string | null;
         }[]
@@ -637,9 +637,9 @@ export interface AppConfigurationSelect<T extends boolean = true> {
                 | {
                     type?: T;
                     newTab?: T;
+                    label?: T;
                     reference?: T;
                     url?: T;
-                    label?: T;
                   };
               id?: T;
             };

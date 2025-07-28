@@ -24,6 +24,7 @@ type LinkType = (options?: {
 export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
   const linkResult: GroupField = {
     name: 'link',
+    label: '', //leave empty, so it's not shown
     type: 'group',
     admin: {
       hideGutter: true,
@@ -46,8 +47,12 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
                 value: 'reference',
               },
               {
-                label: 'Custom URL',
-                value: 'custom',
+                label: 'Label',
+                value: 'nolink',
+              },
+              {
+                label: 'External link',
+                value: 'external',
               },
             ],
           },
@@ -82,9 +87,9 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       name: 'url',
       type: 'text',
       admin: {
-        condition: (_, siblingData) => siblingData?.type === 'custom',
+        condition: (_, siblingData) => siblingData?.type === 'external',
       },
-      label: 'Custom URL',
+      label: 'External URL',
       required: true,
     },
   ]
@@ -101,7 +106,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
     linkResult.fields.push({
       type: 'row',
       fields: [
-        ...linkTypes,
         {
           name: 'label',
           type: 'text',
@@ -111,6 +115,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           label: 'Label',
           required: true,
         },
+        ...linkTypes,
       ],
     })
   } else {

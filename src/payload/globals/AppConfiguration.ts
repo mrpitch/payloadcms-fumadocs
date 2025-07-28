@@ -88,6 +88,16 @@ export const AppConfiguration: GlobalConfig = {
             {
               name: 'navItems',
               type: 'array',
+              label: 'Sidebar Navigation Items',
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: {
+                    path: 'src/payload/components/nav-link-labels1.ts',
+                    exportName: 'NavLinkLabel',
+                  },
+                },
+              },
               fields: [
                 link({
                   appearances: false,
