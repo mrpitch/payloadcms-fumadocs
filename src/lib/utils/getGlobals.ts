@@ -17,7 +17,7 @@ export const getGlobals = async (slug: TGlobal, draft?: boolean) => {
       return await payload.findGlobal({
         slug: slug,
         draft: draft || false,
-        depth: 1,
+        depth: 4,
       })
     },
     [`global_${slug}`],

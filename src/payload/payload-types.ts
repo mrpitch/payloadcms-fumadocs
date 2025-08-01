@@ -562,6 +562,19 @@ export interface AppConfiguration {
               value: number | Doc;
             } | null;
             url?: string | null;
+            nestedLinks?:
+              | {
+                  type?: ('reference' | 'nolink' | 'external') | null;
+                  newTab?: boolean | null;
+                  label: string;
+                  reference?: {
+                    relationTo: 'docs';
+                    value: number | Doc;
+                  } | null;
+                  url?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
           };
           id?: string | null;
         }[]
@@ -640,6 +653,16 @@ export interface AppConfigurationSelect<T extends boolean = true> {
                     label?: T;
                     reference?: T;
                     url?: T;
+                    nestedLinks?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          label?: T;
+                          reference?: T;
+                          url?: T;
+                          id?: T;
+                        };
                   };
               id?: T;
             };

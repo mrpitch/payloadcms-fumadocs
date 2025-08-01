@@ -93,7 +93,7 @@ export const AppConfiguration: GlobalConfig = {
                 initCollapsed: true,
                 components: {
                   RowLabel: {
-                    path: 'src/payload/components/nav-link-labels1.ts',
+                    path: 'src/payload/components/nav-link-labels.ts',
                     exportName: 'NavLinkLabel',
                   },
                 },

@@ -103,21 +103,100 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       },
     }))
 
-    linkResult.fields.push({
-      type: 'row',
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          admin: {
-            width: '50%',
+    linkResult.fields.push(
+      {
+        type: 'row',
+        fields: [
+          {
+            name: 'label',
+            type: 'text',
+            admin: {
+              width: '50%',
+            },
+            label: 'Label',
+            required: true,
           },
-          label: 'Label',
-          required: true,
+          ...linkTypes,
+        ],
+      },
+      {
+        type: 'group',
+        admin: {
+          hideGutter: true,
         },
-        ...linkTypes,
-      ],
-    })
+        fields: [
+          {
+            name: 'nestedLinks',
+            type: 'array',
+            label: 'Nested Links',
+            admin: {
+              components: {
+                RowLabel: {
+                  path: 'src/payload/components/nav-link-labels.ts',
+                  exportName: 'NavLinkChildLabel',
+                },
+              },
+            },
+            fields: [
+              {
+                type: 'row',
+                fields: [
+                  {
+                    name: 'type',
+                    type: 'radio',
+                    admin: {
+                      layout: 'horizontal',
+                      width: '50%',
+                    },
+                    defaultValue: 'reference',
+                    options: [
+                      {
+                        label: 'Internal link',
+                        value: 'reference',
+                      },
+                      {
+                        label: 'Label',
+                        value: 'nolink',
+                      },
+                      {
+                        label: 'External link',
+                        value: 'external',
+                      },
+                    ],
+                  },
+                  {
+                    name: 'newTab',
+                    type: 'checkbox',
+                    admin: {
+                      style: {
+                        alignSelf: 'flex-end',
+                      },
+                      width: '50%',
+                    },
+                    label: 'Open in new tab',
+                  },
+                ],
+              },
+              {
+                type: 'row',
+                fields: [
+                  {
+                    name: 'label',
+                    type: 'text',
+                    admin: {
+                      width: '50%',
+                    },
+                    label: 'Label',
+                    required: true,
+                  },
+                  ...linkTypes,
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    )
   } else {
     linkResult.fields = [...linkResult.fields, ...linkTypes]
   }
