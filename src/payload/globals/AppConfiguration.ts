@@ -82,35 +82,6 @@ export const AppConfiguration: GlobalConfig = {
           ],
         },
         {
-          name: 'sideBarNavigation',
-          label: 'Sidebar Navigation',
-          fields: [
-            {
-              name: 'navItems',
-              type: 'array',
-              label: 'Sidebar Navigation Items',
-              admin: {
-                initCollapsed: true,
-                components: {
-                  RowLabel: {
-                    path: 'src/payload/components/nav-link-labels.ts',
-                    exportName: 'NavLinkLabel',
-                  },
-                },
-              },
-              fields: [
-                link({
-                  appearances: false,
-                }),
-              ],
-
-              minRows: 1,
-              maxRows: 15,
-              dbName: 'sidebarNavigationNavItems',
-            },
-          ],
-        },
-        {
           name: 'playground',
           label: 'Playground',
           fields: [

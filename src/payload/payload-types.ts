@@ -7,47 +7,6 @@
  */
 
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NavLinksProps".
- */
-export type NavLinksProps =
-  | {
-      name?: string | null;
-      linkType?: ('External' | 'Internal' | 'No Link') | null;
-      /**
-       * Should this open in a new browser window/tab?
-       */
-      openInNewTab?: ('Yes' | 'No') | null;
-      externalLink?: string | null;
-      link?: {
-        relationTo: 'docs';
-        value: number | Doc;
-      } | null;
-      nestedLinks?:
-        | {
-            navigationLink?:
-              | {
-                  name?: string | null;
-                  linkType?: ('External' | 'Internal') | null;
-                  /**
-                   * Should this open in a new browser window/tab?
-                   */
-                  openInNewTab?: ('Yes' | 'No') | null;
-                  externalLink?: string | null;
-                  link?: {
-                    relationTo: 'docs';
-                    value: number | Doc;
-                  } | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-          }[]
-        | null;
-      id?: string | null;
-    }[]
-  | null;
-/**
  * Supported timezones in IANA format.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -550,36 +509,6 @@ export interface AppConfiguration {
         }[]
       | null;
   };
-  sideBarNavigation?: {
-    navItems?:
-      | {
-          link: {
-            type?: ('reference' | 'nolink' | 'external') | null;
-            newTab?: boolean | null;
-            label: string;
-            reference?: {
-              relationTo: 'docs';
-              value: number | Doc;
-            } | null;
-            url?: string | null;
-            nestedLinks?:
-              | {
-                  type?: ('reference' | 'nolink' | 'external') | null;
-                  newTab?: boolean | null;
-                  label: string;
-                  reference?: {
-                    relationTo: 'docs';
-                    value: number | Doc;
-                  } | null;
-                  url?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-  };
   playground?: {
     jsonTest?:
       | {
@@ -602,7 +531,34 @@ export interface AppConfiguration {
  */
 export interface Nav {
   id: number;
-  navLink?: NavLinksProps;
+  navItems?:
+    | {
+        link: {
+          type?: ('reference' | 'nolink' | 'external') | null;
+          newTab?: boolean | null;
+          label: string;
+          reference?: {
+            relationTo: 'docs';
+            value: number | Doc;
+          } | null;
+          url?: string | null;
+          nestedLinks?:
+            | {
+                type?: ('reference' | 'nolink' | 'external') | null;
+                newTab?: boolean | null;
+                label: string;
+                reference?: {
+                  relationTo: 'docs';
+                  value: number | Doc;
+                } | null;
+                url?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -639,34 +595,6 @@ export interface AppConfigurationSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  sideBarNavigation?:
-    | T
-    | {
-        navItems?:
-          | T
-          | {
-              link?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    label?: T;
-                    reference?: T;
-                    url?: T;
-                    nestedLinks?:
-                      | T
-                      | {
-                          type?: T;
-                          newTab?: T;
-                          label?: T;
-                          reference?: T;
-                          url?: T;
-                          id?: T;
-                        };
-                  };
-              id?: T;
-            };
-      };
   playground?:
     | T
     | {
@@ -683,37 +611,33 @@ export interface AppConfigurationSelect<T extends boolean = true> {
  * via the `definition` "nav_select".
  */
 export interface NavSelect<T extends boolean = true> {
-  navLink?: T | NavLinksPropsSelect<T>;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "NavLinksProps_select".
- */
-export interface NavLinksPropsSelect<T extends boolean = true> {
-  name?: T;
-  linkType?: T;
-  openInNewTab?: T;
-  externalLink?: T;
-  link?: T;
-  nestedLinks?:
+  navItems?:
     | T
     | {
-        navigationLink?:
+        link?:
           | T
           | {
-              name?: T;
-              linkType?: T;
-              openInNewTab?: T;
-              externalLink?: T;
-              link?: T;
-              id?: T;
+              type?: T;
+              newTab?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              nestedLinks?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    label?: T;
+                    reference?: T;
+                    url?: T;
+                    id?: T;
+                  };
             };
         id?: T;
       };
-  id?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

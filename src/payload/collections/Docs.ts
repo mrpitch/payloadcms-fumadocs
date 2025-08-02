@@ -18,6 +18,10 @@ import {
 
 export const Docs: CollectionConfig = {
   slug: 'docs',
+  defaultPopulate: {
+    slug: true,
+    title: true,
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'folder', 'slug', 'publishedAt', 'status'],
