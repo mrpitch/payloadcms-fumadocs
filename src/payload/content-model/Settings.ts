@@ -1,9 +1,10 @@
 import type { GlobalConfig } from 'payload'
-import { link } from '@/payload/fields/links'
 
-export const AppConfiguration: GlobalConfig = {
-  slug: 'app-configuration',
-  admin: {},
+export const Settings: GlobalConfig = {
+  slug: 'settings',
+  admin: {
+    group: 'Admin',
+  },
   versions: {
     drafts: {
       autosave: {
@@ -30,54 +31,6 @@ export const AppConfiguration: GlobalConfig = {
               name: 'siteDescription',
               type: 'text',
               required: true,
-            },
-          ],
-        },
-        {
-          name: 'mainNavigation',
-          label: 'Main Navigation',
-          fields: [
-            {
-              name: 'navItems',
-              type: 'array',
-              fields: [
-                {
-                  name: 'label',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'href',
-                  type: 'text',
-                  required: true,
-                },
-              ],
-              minRows: 1,
-              maxRows: 15,
-            },
-          ],
-        },
-        {
-          name: 'legalNavigation',
-          label: 'Legal Navigation',
-          fields: [
-            {
-              name: 'navItems',
-              type: 'array',
-              fields: [
-                {
-                  name: 'label',
-                  type: 'text',
-                  required: true,
-                },
-                {
-                  name: 'href',
-                  type: 'text',
-                  required: true,
-                },
-              ],
-              minRows: 1,
-              maxRows: 5,
             },
           ],
         },

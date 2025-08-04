@@ -68,19 +68,29 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
-    media: Media;
+    articles: Article;
     docs: Doc;
+    menu: Menu;
+    media: Media;
     'payload-jobs': PayloadJob;
+    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'payload-folders': {
+      documentsAndFolders: 'payload-folders' | 'articles';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
     docs: DocsSelect<false> | DocsSelect<true>;
+    menu: MenuSelect<false> | MenuSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
+    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -89,12 +99,10 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    'app-configuration': AppConfiguration;
-    nav: Nav;
+    settings: Setting;
   };
   globalsSelect: {
-    'app-configuration': AppConfigurationSelect<false> | AppConfigurationSelect<true>;
-    nav: NavSelect<false> | NavSelect<true>;
+    settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: null;
   user: User & {
@@ -155,22 +163,43 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "articles".
  */
-export interface Media {
+export interface Article {
   id: number;
-  alt: string;
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders".
+ */
+export interface FolderInterface {
+  id: number;
+  name: string;
+  folder?: (number | null) | FolderInterface;
+  documentsAndFolders?: {
+    docs?: (
+      | {
+          relationTo?: 'payload-folders';
+          value: number | FolderInterface;
+        }
+      | {
+          relationTo?: 'articles';
+          value: number | Article;
+        }
+    )[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  folderType?: 'articles'[] | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -200,6 +229,65 @@ export interface Doc {
   } | null;
   publishedAt?: string | null;
   author: number | User;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu".
+ */
+export interface Menu {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  indexItem: number | Doc;
+  menuItems?:
+    | {
+        link: {
+          type?: ('reference' | 'nolink' | 'external') | null;
+          label: string;
+          reference?: {
+            relationTo: 'docs';
+            value: number | Doc;
+          } | null;
+          url?: string | null;
+          menuChildLinks?:
+            | {
+                type?: ('reference' | 'external') | null;
+                label: string;
+                reference?: {
+                  relationTo: 'docs';
+                  value: number | Doc;
+                } | null;
+                url?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -308,16 +396,28 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
+        relationTo: 'articles';
+        value: number | Article;
       } | null)
     | ({
         relationTo: 'docs';
         value: number | Doc;
       } | null)
     | ({
+        relationTo: 'menu';
+        value: number | Menu;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
         relationTo: 'payload-jobs';
         value: number | PayloadJob;
+      } | null)
+    | ({
+        relationTo: 'payload-folders';
+        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -385,21 +485,16 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
+ * via the `definition` "articles_select".
  */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  folder?: T;
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -417,6 +512,59 @@ export interface DocsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu_select".
+ */
+export interface MenuSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  indexItem?: T;
+  menuItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              menuChildLinks?:
+                | T
+                | {
+                    type?: T;
+                    label?: T;
+                    reference?: T;
+                    url?: T;
+                    id?: T;
+                  };
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -446,6 +594,18 @@ export interface PayloadJobsSelect<T extends boolean = true> {
   queue?: T;
   waitUntil?: T;
   processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-folders_select".
+ */
+export interface PayloadFoldersSelect<T extends boolean = true> {
+  name?: T;
+  folder?: T;
+  documentsAndFolders?: T;
+  folderType?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -483,31 +643,13 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "app-configuration".
+ * via the `definition` "settings".
  */
-export interface AppConfiguration {
+export interface Setting {
   id: number;
   settings: {
     siteName: string;
     siteDescription: string;
-  };
-  mainNavigation?: {
-    navItems?:
-      | {
-          label: string;
-          href: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  legalNavigation?: {
-    navItems?:
-      | {
-          label: string;
-          href: string;
-          id?: string | null;
-        }[]
-      | null;
   };
   playground?: {
     jsonTest?:
@@ -527,73 +669,14 @@ export interface AppConfiguration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "nav".
+ * via the `definition` "settings_select".
  */
-export interface Nav {
-  id: number;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'nolink' | 'external') | null;
-          newTab?: boolean | null;
-          label: string;
-          reference?: {
-            relationTo: 'docs';
-            value: number | Doc;
-          } | null;
-          url?: string | null;
-          nestedLinks?:
-            | {
-                type?: ('reference' | 'nolink' | 'external') | null;
-                newTab?: boolean | null;
-                label: string;
-                reference?: {
-                  relationTo: 'docs';
-                  value: number | Doc;
-                } | null;
-                url?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "app-configuration_select".
- */
-export interface AppConfigurationSelect<T extends boolean = true> {
+export interface SettingsSelect<T extends boolean = true> {
   settings?:
     | T
     | {
         siteName?: T;
         siteDescription?: T;
-      };
-  mainNavigation?:
-    | T
-    | {
-        navItems?:
-          | T
-          | {
-              label?: T;
-              href?: T;
-              id?: T;
-            };
-      };
-  legalNavigation?:
-    | T
-    | {
-        navItems?:
-          | T
-          | {
-              label?: T;
-              href?: T;
-              id?: T;
-            };
       };
   playground?:
     | T
@@ -608,50 +691,26 @@ export interface AppConfigurationSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "nav_select".
- */
-export interface NavSelect<T extends boolean = true> {
-  navItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              label?: T;
-              reference?: T;
-              url?: T;
-              nestedLinks?:
-                | T
-                | {
-                    type?: T;
-                    newTab?: T;
-                    label?: T;
-                    reference?: T;
-                    url?: T;
-                    id?: T;
-                  };
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TaskSchedulePublish".
  */
 export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'docs';
-      value: number | Doc;
-    } | null;
-    global?: 'app-configuration' | null;
+    doc?:
+      | ({
+          relationTo: 'articles';
+          value: number | Article;
+        } | null)
+      | ({
+          relationTo: 'docs';
+          value: number | Doc;
+        } | null)
+      | ({
+          relationTo: 'menu';
+          value: number | Menu;
+        } | null);
+    global?: 'settings' | null;
     user?: (number | null) | User;
   };
   output?: unknown;

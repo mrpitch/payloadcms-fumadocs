@@ -1,3 +1,5 @@
+import { FolderTableCell as FolderTableCell_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
+import { FolderField as FolderField_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { RscEntryLexicalField as RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
 import { LexicalDiffComponent as LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e } from '@payloadcms/richtext-lexical/rsc'
@@ -21,11 +23,14 @@ import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e0
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { MenuLinkChildLabel as MenuLinkChildLabel_0550771b03ec8281830bd0fb15d6e0cc } from 'src/payload/components/menu-link-labels.ts'
+import { MenuLinkLabel as MenuLinkLabel_0550771b03ec8281830bd0fb15d6e0cc } from 'src/payload/components/menu-link-labels.ts'
+import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { Test as Test_3ebb671f2337ac4c32939f42212f9762 } from 'src/payload/components/test.tsx'
-import { NavLinkChildLabel as NavLinkChildLabel_7153181cf1d03f801e91239ba31378cf } from 'src/payload/components/nav-link-labels.ts'
-import { NavLinkLabel as NavLinkLabel_7153181cf1d03f801e91239ba31378cf } from 'src/payload/components/nav-link-labels.ts'
 
 export const importMap = {
+  "@payloadcms/ui/rsc#FolderTableCell": FolderTableCell_ab83ff7e88da8d3530831f296ec4756a,
+  "@payloadcms/ui/rsc#FolderField": FolderField_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#LexicalDiffComponent": LexicalDiffComponent_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -49,7 +54,8 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "src/payload/components/test.tsx#Test": Test_3ebb671f2337ac4c32939f42212f9762,
-  "src/payload/components/nav-link-labels.ts#NavLinkChildLabel": NavLinkChildLabel_7153181cf1d03f801e91239ba31378cf,
-  "src/payload/components/nav-link-labels.ts#NavLinkLabel": NavLinkLabel_7153181cf1d03f801e91239ba31378cf
+  "src/payload/components/menu-link-labels.ts#MenuLinkChildLabel": MenuLinkChildLabel_0550771b03ec8281830bd0fb15d6e0cc,
+  "src/payload/components/menu-link-labels.ts#MenuLinkLabel": MenuLinkLabel_0550771b03ec8281830bd0fb15d6e0cc,
+  "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
+  "src/payload/components/test.tsx#Test": Test_3ebb671f2337ac4c32939f42212f9762
 }

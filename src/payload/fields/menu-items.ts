@@ -15,13 +15,17 @@ export const appearanceOptions: Record<LinkAppearances, { label: string; value: 
   },
 }
 
-type LinkType = (options?: {
+type MenuLinkType = (options?: {
   appearances?: LinkAppearances[] | false
   disableLabel?: boolean
   overrides?: Partial<GroupField>
 }) => Field
 
-export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
+export const menuLink: MenuLinkType = ({
+  appearances,
+  disableLabel = false,
+  overrides = {},
+} = {}) => {
   const linkResult: GroupField = {
     name: 'link',
     label: '', //leave empty, so it's not shown
@@ -55,17 +59,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
                 value: 'external',
               },
             ],
-          },
-          {
-            name: 'newTab',
-            type: 'checkbox',
-            admin: {
-              style: {
-                alignSelf: 'flex-end',
-              },
-              width: '50%',
-            },
-            label: 'Open in new tab',
           },
         ],
       },
@@ -126,14 +119,14 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
         },
         fields: [
           {
-            name: 'nestedLinks',
+            name: 'menuChildLinks',
             type: 'array',
-            label: 'Nested Links',
+            label: 'Menu Child Links',
             admin: {
               components: {
                 RowLabel: {
-                  path: 'src/payload/components/nav-link-labels.ts',
-                  exportName: 'NavLinkChildLabel',
+                  path: 'src/payload/components/menu-link-labels.ts',
+                  exportName: 'MenuLinkChildLabel',
                 },
               },
             },
@@ -155,25 +148,10 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
                         value: 'reference',
                       },
                       {
-                        label: 'Label',
-                        value: 'nolink',
-                      },
-                      {
                         label: 'External link',
                         value: 'external',
                       },
                     ],
-                  },
-                  {
-                    name: 'newTab',
-                    type: 'checkbox',
-                    admin: {
-                      style: {
-                        alignSelf: 'flex-end',
-                      },
-                      width: '50%',
-                    },
-                    label: 'Open in new tab',
                   },
                 ],
               },
@@ -183,9 +161,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
                   {
                     name: 'label',
                     type: 'text',
-                    admin: {
-                      width: '50%',
-                    },
                     label: 'Label',
                     required: true,
                   },

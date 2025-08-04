@@ -31,7 +31,7 @@ import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 
 import configPromise from '@payload-config'
-import type { Doc } from '@payload-types'
+import type { Doc, Menu } from '@payload-types'
 
 import { revalidate } from '@/lib/utils/constants'
 
@@ -165,6 +165,32 @@ export const getAllByCollection = async <T extends TCollection>(
     },
     [`all_${collection}`],
     { revalidate: revalidate, tags: [`collection_${collection}`] },
+  )
+
+  return cached()
+}
+
+export const getMenuBySlug = async (slug: string): Promise<Menu | null> => {
+  const cached = unstable_cache(
+    async () => {
+      const result = await payload.find({
+        collection: 'menu',
+        depth: 3,
+        draft: false,
+        overrideAccess: true,
+        limit: 1,
+        pagination: false,
+        where: {
+          slug: {
+            equals: slug,
+          },
+        },
+      })
+
+      return result.docs?.[0] || null
+    },
+    [`menu_${slug}`],
+    { revalidate: revalidate, tags: [`menu`, `menu_${slug}`] },
   )
 
   return cached()

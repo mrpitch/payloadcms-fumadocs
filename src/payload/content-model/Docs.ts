@@ -23,6 +23,7 @@ export const Docs: CollectionConfig = {
     title: true,
   },
   admin: {
+    group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'folder', 'slug', 'publishedAt', 'status'],
   },

@@ -1,13 +1,13 @@
-import type { Nav, Doc } from '@payload-types'
+import type { Menu, Doc } from '@payload-types'
 import type { PageTree } from 'fumadocs-core/server'
 
 function isDoc(value: number | Doc): value is Doc {
   return typeof value === 'object' && value !== null && 'slug' in value
 }
 
-export function createPageTree(nav: Nav): PageTree.Root {
+export function createPageTree(menu: Menu): PageTree.Root {
   const transformNestedLink = (
-    link: NonNullable<NonNullable<Nav['navItems']>[number]['link']['nestedLinks']>[number],
+    link: NonNullable<NonNullable<Menu['menuItems']>[number]['link']['menuChildLinks']>[number],
   ) => {
     const type = link.type
     const isExternal = type === 'external'
@@ -28,12 +28,12 @@ export function createPageTree(nav: Nav): PageTree.Root {
   }
 
   const children =
-    nav.navItems
-      ?.map((navItem) => {
-        const link = navItem.link
-        const { type, label, reference, url, nestedLinks } = link
+    menu.menuItems
+      ?.map((menuItem) => {
+        const link = menuItem.link
+        const { type, label, reference, url, menuChildLinks } = link
 
-        if (type === 'reference' && reference && isDoc(reference.value) && nestedLinks?.length) {
+        if (type === 'reference' && reference && isDoc(reference.value) && menuChildLinks?.length) {
           return {
             type: 'folder' as const,
             name: label,
@@ -42,15 +42,15 @@ export function createPageTree(nav: Nav): PageTree.Root {
               name: reference.value.title || 'Index',
               url: `/docs/${reference.value.slug}`,
             },
-            children: nestedLinks.map(transformNestedLink),
+            children: menuChildLinks.map(transformNestedLink),
           }
         }
 
-        if (type === 'nolink' && nestedLinks?.length) {
+        if (type === 'nolink' && menuChildLinks?.length) {
           return {
             type: 'folder' as const,
             name: label,
-            children: nestedLinks.map(transformNestedLink),
+            children: menuChildLinks.map(transformNestedLink),
           }
         }
 
@@ -77,7 +77,7 @@ export function createPageTree(nav: Nav): PageTree.Root {
       .filter((child) => child !== null) ?? []
 
   return {
-    name: 'Sidebar Nav Docs',
+    name: menu.title,
     children,
   }
 }

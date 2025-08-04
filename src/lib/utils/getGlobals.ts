@@ -26,18 +26,3 @@ export const getGlobals = async (slug: TGlobal, draft?: boolean) => {
 
   return cached()
 }
-
-export const getSideNav = async (draft?: boolean) => {
-  const cached = unstable_cache(
-    async () => {
-      return await payload.findGlobal({
-        slug: 'nav',
-        draft: draft || false,
-      })
-    },
-    [`global_nav`],
-    { revalidate: revalidate, tags: ['global', `global_nav`] },
-  )
-
-  return cached()
-}
