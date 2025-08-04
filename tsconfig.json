@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@/lib/*": ["./src/lib/*"],
       "@/fumadocs/*": ["./src/app/(fumadocs)/*"],
       "@payload-config": ["src/payload/payload.config.ts"],
       "@payload-types": ["src/payload/payload-types.ts"]
