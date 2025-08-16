@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
-import { baseOptions } from '@/fumadocs/layout.config'
+import { baseOptions } from '@/app/(fumadocs)/layout.config'
 import { getMenuBySlug } from '@/lib/utils/getCollection'
 import type { Menu } from '@payload-types'
 import { createPageTree } from '@/payload/utils/create-page-tree'
