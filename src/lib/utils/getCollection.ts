@@ -22,16 +22,13 @@
  * 2. Ensure the new type is imported from @payload-types.
  * 3. Functions will automatically support the new collection.
  */
-
-import path from 'path'
-import { fileURLToPath } from 'url'
-
 import { unstable_cache } from 'next/cache'
 
 import { getPayload } from 'payload'
 
 import configPromise from '@payload-config'
 import type { Doc, Menu } from '@payload-types'
+import { importMap } from '@/app/(payload)/admin/importMap'
 
 import { revalidate } from '@/lib/utils/constants'
 
@@ -43,8 +40,8 @@ export interface TCollectionTypeMap {
 
 const payload = await getPayload({
   config: configPromise,
-  cron: {},
-  importMap: {},
+  cron: false,
+  importMap,
 })
 
 /**

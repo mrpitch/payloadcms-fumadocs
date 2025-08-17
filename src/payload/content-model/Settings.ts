@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { autoSetPublishedAt } from '@/payload/hooks/auto-set-publishdate'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
@@ -67,15 +68,9 @@ export const Settings: GlobalConfig = {
         },
         position: 'sidebar',
       },
+
       hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
+        beforeChange: [autoSetPublishedAt],
       },
     },
   ],

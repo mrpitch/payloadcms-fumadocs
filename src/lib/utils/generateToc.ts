@@ -1,5 +1,3 @@
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-
 type TocEntry = {
   title: string
   depth: number
@@ -44,7 +42,7 @@ export function generateTocFromLexical(doc: LexicalDocument): TocEntry[] {
 }
 
 // Alternative function that works with the actual PayloadCMS structure
-export function generateTocFromPayload(doc: DefaultTypedEditorState): TocEntry[] {
+export function generateTocFromPayload(doc: LexicalDocument): TocEntry[] {
   if (!doc?.root?.children) {
     return []
   }

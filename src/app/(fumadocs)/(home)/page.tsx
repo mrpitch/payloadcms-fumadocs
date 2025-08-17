@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { getAllByCollection, getCollectionBySlug } from '@/lib/utils/getCollection'
 
 import { Cards, Card } from '@/components/card'

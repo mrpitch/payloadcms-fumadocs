@@ -11,9 +11,8 @@ export default async function Layout({
   params,
 }: {
   children: ReactNode
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  //const { slug } = await params
   //const menuSlug = 'topic-2'
   //const sidebarNavigation = (await getMenuBySlug(menuSlug)) as Menu
 

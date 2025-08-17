@@ -1,6 +1,9 @@
 import type { CollectionConfig } from 'payload'
 
-import { menuLink } from '../fields/menu-items'
+import { menuLink } from '@/payload/fields/menu-items'
+
+import { autoSetPublishedAt } from '@/payload/hooks/auto-set-publishdate'
+import { revalidateCache, revalidateCacheAfterDelete } from '@/payload/hooks/revalidate-cache'
 
 const Menu: CollectionConfig = {
   slug: 'menu',
@@ -69,7 +72,24 @@ const Menu: CollectionConfig = {
       maxRows: 15,
       dbName: 'menuItems',
     },
+    {
+      name: 'publishedAt',
+      type: 'date',
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+        position: 'sidebar',
+      },
+      hooks: {
+        beforeChange: [autoSetPublishedAt],
+      },
+    },
   ],
+  hooks: {
+    afterChange: [revalidateCache],
+    afterDelete: [revalidateCacheAfterDelete],
+  },
 }
 
 export { Menu }

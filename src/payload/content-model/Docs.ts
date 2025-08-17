@@ -1,20 +1,11 @@
-import { CollectionConfig, RichTextField } from 'payload'
+import { CollectionConfig, User } from 'payload'
+import { Doc } from '@payload-types'
 
 import { revalidateCache, revalidateCacheAfterDelete } from '@/payload/hooks/revalidate-cache'
+import { autoSetPublishedAt } from '@/payload/hooks/auto-set-publishdate'
+import { autoSetAuthor } from '@/payload/hooks/auto-set-author'
 
-import {
-  lexicalEditor,
-  editorConfigFactory,
-  HeadingFeature,
-  ItalicFeature,
-  BoldFeature,
-  LinkFeature,
-  UnorderedListFeature,
-  OrderedListFeature,
-  UnderlineFeature,
-  BlockquoteFeature,
-  ParagraphFeature,
-} from '@payloadcms/richtext-lexical'
+import { lexicalEditorConfig } from '@/payload/utils/lexical-editor'
 
 export const Docs: CollectionConfig = {
   slug: 'docs',
@@ -79,22 +70,7 @@ export const Docs: CollectionConfig = {
               name: 'copy',
               type: 'richText',
               localized: true,
-              editor: lexicalEditor({
-                features({ rootFeatures }) {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4', 'h5', 'h6'] }),
-                    ParagraphFeature(),
-                    BoldFeature(),
-                    UnderlineFeature(),
-                    OrderedListFeature(),
-                    UnorderedListFeature(),
-                    LinkFeature(),
-                    ItalicFeature(),
-                    BlockquoteFeature(),
-                  ]
-                },
-              }),
+              editor: lexicalEditorConfig,
             },
           ],
         },
@@ -110,14 +86,7 @@ export const Docs: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData?._status === 'published' && !value) {
-              return new Date()
-            }
-            return value
-          },
-        ],
+        beforeChange: [autoSetPublishedAt],
       },
     },
     {
@@ -129,17 +98,7 @@ export const Docs: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeChange: [
-          ({ req, value }) => {
-            // If there's no author set and we have a user
-            if (!value && req.user) {
-              console.log('value', value)
-              console.log('req', req.user)
-              return req.user.id
-            }
-            return value
-          },
-        ],
+        beforeChange: [autoSetAuthor<Doc, Doc['author'], User>()],
       },
     },
   ],

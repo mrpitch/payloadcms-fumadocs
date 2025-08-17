@@ -1,26 +1,21 @@
 import React from 'react'
-import {
-  DefaultNodeTypes,
-  SerializedLinkNode,
-  SerializedHeadingNode,
-  type DefaultTypedEditorState,
-} from '@payloadcms/richtext-lexical'
 
 import {
   type JSXConvertersFunction,
   LinkJSXConverter,
   RichText as ConvertRichText,
-  JSXConverters,
 } from '@payloadcms/richtext-lexical/react'
 
-const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
-  const { relationTo, value } = linkNode.fields.doc!
-  if (typeof value !== 'object') {
-    throw new Error('Expected value to be an object')
+const internalDocToHref = ({ linkNode }: { linkNode: any }) => {
+  const { relationTo, value } = linkNode.fields?.doc || {}
+  if (typeof value !== 'object' || !value?.slug) {
+    return '#'
   }
   const slug = value.slug
 
   switch (relationTo) {
+    case 'docs':
+      return `/docs/${slug}`
     case 'posts':
       return `/posts/${slug}`
     case 'categories':
@@ -32,10 +27,9 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   }
 }
 
-export const headingConverter: JSXConverters<SerializedHeadingNode> = {
-  heading: ({ node, nodesToJSX }) => {
+const headingConverter = {
+  heading: ({ node, nodesToJSX }: any) => {
     const tag = node.tag || 'h2'
-
     const text = nodesToJSX({ nodes: node.children })
 
     const id = text
@@ -45,6 +39,7 @@ export const headingConverter: JSXConverters<SerializedHeadingNode> = {
       .replace(/[^a-z0-9-]/g, '')
 
     const headingClassName = 'flex scroll-m-28 flex-row items-center gap-2'
+
     switch (tag) {
       case 'h2':
         return (
@@ -98,15 +93,14 @@ export const headingConverter: JSXConverters<SerializedHeadingNode> = {
   },
 }
 
-// Custom JSX converters that include the heading renderer
-const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConverters }) => ({
+const jsxConverters: JSXConvertersFunction = ({ defaultConverters }: any) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
   ...headingConverter,
 })
 
 type Props = {
-  data: DefaultTypedEditorState
+  data: any // Changed from DefaultTypedEditorState
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const RichText = (props: Props) => {

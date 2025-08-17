@@ -5,8 +5,8 @@ import type { AccordionMultipleProps, AccordionSingleProps } from '@radix-ui/rea
 import { Check, ChevronRight, LinkIcon } from 'lucide-react'
 import { forwardRef, type ComponentPropsWithoutRef, useState, useEffect } from 'react'
 import { cn } from '../lib/utils/cn'
-import { useCopyButton } from '../lib/use-copy-button'
-import { buttonVariants } from './ui/button'
+import { useCopyButton } from '@/lib/hooks/use-copy-button'
+import { buttonVariants } from '@/components/ui/button'
 
 export const Accordions = forwardRef<
   HTMLDivElement,

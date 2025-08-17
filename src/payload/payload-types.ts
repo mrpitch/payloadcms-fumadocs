@@ -288,6 +288,7 @@ export interface Menu {
         id?: string | null;
       }[]
     | null;
+  publishedAt?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -544,6 +545,7 @@ export interface MenuSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
