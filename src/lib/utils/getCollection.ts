@@ -41,14 +41,10 @@ export interface TCollectionTypeMap {
   docs: Doc
 }
 
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
-
 const payload = await getPayload({
   config: configPromise,
-  importMap: {
-    baseDir: path.resolve(dirname),
-  },
+  cron: {},
+  importMap: {},
 })
 
 /**
@@ -156,6 +152,7 @@ export const getAllByCollection = async <T extends TCollection>(
           publishedAt: true,
           categories: true,
           relatedPosts: true,
+          excerpt: true,
         },
       })
       return {
