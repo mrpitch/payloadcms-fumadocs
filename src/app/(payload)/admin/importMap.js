@@ -23,9 +23,10 @@ import { RelationshipFeatureClient as RelationshipFeatureClient_e70f5e05f09f93e0
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { MenuLinkChildLabel as MenuLinkChildLabel_0550771b03ec8281830bd0fb15d6e0cc } from 'src/payload/components/menu-link-labels.ts'
-import { MenuLinkLabel as MenuLinkLabel_0550771b03ec8281830bd0fb15d6e0cc } from 'src/payload/components/menu-link-labels.ts'
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
+import { MenuLinkChildLabel as MenuLinkChildLabel_9abb96d3b6fc77782ab22d4755df0421 } from 'src/payload/components/menu-labels.ts'
+import { MenuLinkLabel as MenuLinkLabel_9abb96d3b6fc77782ab22d4755df0421 } from 'src/payload/components/menu-labels.ts'
+import { MenuSectionLabel as MenuSectionLabel_9abb96d3b6fc77782ab22d4755df0421 } from 'src/payload/components/menu-labels.ts'
 import { Test as Test_3ebb671f2337ac4c32939f42212f9762 } from 'src/payload/components/test.tsx'
 
 export const importMap = {
@@ -54,8 +55,9 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "src/payload/components/menu-link-labels.ts#MenuLinkChildLabel": MenuLinkChildLabel_0550771b03ec8281830bd0fb15d6e0cc,
-  "src/payload/components/menu-link-labels.ts#MenuLinkLabel": MenuLinkLabel_0550771b03ec8281830bd0fb15d6e0cc,
   "@payloadcms/ui#FolderTypeField": FolderTypeField_3817bf644402e67bfe6577f60ef982de,
+  "src/payload/components/menu-labels.ts#MenuLinkChildLabel": MenuLinkChildLabel_9abb96d3b6fc77782ab22d4755df0421,
+  "src/payload/components/menu-labels.ts#MenuLinkLabel": MenuLinkLabel_9abb96d3b6fc77782ab22d4755df0421,
+  "src/payload/components/menu-labels.ts#MenuSectionLabel": MenuSectionLabel_9abb96d3b6fc77782ab22d4755df0421,
   "src/payload/components/test.tsx#Test": Test_3ebb671f2337ac4c32939f42212f9762
 }

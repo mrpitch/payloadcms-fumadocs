@@ -125,7 +125,7 @@ export const menuLink: MenuLinkType = ({
             admin: {
               components: {
                 RowLabel: {
-                  path: 'src/payload/components/menu-link-labels.ts',
+                  path: 'src/payload/components/menu-labels.ts',
                   exportName: 'MenuLinkChildLabel',
                 },
               },

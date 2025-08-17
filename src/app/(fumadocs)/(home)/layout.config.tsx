@@ -24,4 +24,3 @@ export const baseOptionsHome: BaseLayoutProps = {
     },
   ],
 }
-console.log('baseOptionsHome', baseOptionsHome)

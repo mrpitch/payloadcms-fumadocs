@@ -25,7 +25,7 @@ export default buildConfig({
     },
   },
   globals: [Settings],
-  collections: [Users, Articles, Docs, Menu, Media],
+  collections: [Users, Articles, Docs, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

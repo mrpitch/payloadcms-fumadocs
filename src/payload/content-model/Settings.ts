@@ -1,5 +1,9 @@
 import type { GlobalConfig } from 'payload'
+
+import { menuLink } from '@/payload/fields/menu-items'
+
 import { autoSetPublishedAt } from '@/payload/hooks/auto-set-publishdate'
+import { revalidateCache, revalidateCacheAfterDelete } from '@/payload/hooks/revalidate-cache'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
@@ -36,6 +40,70 @@ export const Settings: GlobalConfig = {
           ],
         },
         {
+          name: 'docsMenu',
+          label: 'Docs Menu',
+          fields: [
+            {
+              name: 'menuSections',
+              type: 'array',
+              label: 'Menu Sections',
+              admin: {
+                initCollapsed: true,
+                components: {
+                  RowLabel: {
+                    path: 'src/payload/components/menu-labels.ts',
+                    exportName: 'MenuSectionLabel',
+                  },
+                },
+              },
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  label: 'label',
+                  required: true,
+                },
+                {
+                  name: 'description',
+                  type: 'textarea',
+                  label: 'Description',
+                  required: false,
+                },
+                {
+                  name: 'indexItem',
+                  type: 'relationship',
+                  label: 'Index Item',
+                  relationTo: 'docs',
+                  required: true,
+                },
+                {
+                  name: 'menuItems',
+                  type: 'array',
+                  label: 'Menu Items',
+                  admin: {
+                    initCollapsed: true,
+                    components: {
+                      RowLabel: {
+                        path: 'src/payload/components/menu-labels.ts',
+                        exportName: 'MenuLinkLabel',
+                      },
+                    },
+                  },
+                  fields: [
+                    menuLink({
+                      appearances: false,
+                    }),
+                  ],
+                  dbName: 'menuSections',
+                  minRows: 1,
+                  maxRows: 15,
+                },
+              ],
+            },
+          ],
+          dbName: 'docsMenu',
+        },
+        {
           name: 'playground',
           label: 'Playground',
           fields: [
@@ -58,6 +126,7 @@ export const Settings: GlobalConfig = {
           ],
         },
       ],
+      dbName: 'settings',
     },
     {
       name: 'publishedAt',
@@ -74,4 +143,8 @@ export const Settings: GlobalConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [revalidateCache],
+    afterDelete: [revalidateCacheAfterDelete],
+  },
 }

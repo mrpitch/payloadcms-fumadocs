@@ -70,7 +70,6 @@ export interface Config {
     users: User;
     articles: Article;
     docs: Doc;
-    menu: Menu;
     media: Media;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
@@ -87,7 +86,6 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     docs: DocsSelect<false> | DocsSelect<true>;
-    menu: MenuSelect<false> | MenuSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -254,47 +252,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "menu".
- */
-export interface Menu {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  indexItem: number | Doc;
-  menuItems?:
-    | {
-        link: {
-          type?: ('reference' | 'nolink' | 'external') | null;
-          label: string;
-          reference?: {
-            relationTo: 'docs';
-            value: number | Doc;
-          } | null;
-          url?: string | null;
-          menuChildLinks?:
-            | {
-                type?: ('reference' | 'external') | null;
-                label: string;
-                reference?: {
-                  relationTo: 'docs';
-                  value: number | Doc;
-                } | null;
-                url?: string | null;
-                id?: string | null;
-              }[]
-            | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  publishedAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
@@ -405,10 +362,6 @@ export interface PayloadLockedDocument {
         value: number | Doc;
       } | null)
     | ({
-        relationTo: 'menu';
-        value: number | Menu;
-      } | null)
-    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -516,42 +469,6 @@ export interface DocsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "menu_select".
- */
-export interface MenuSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  description?: T;
-  indexItem?: T;
-  menuItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              label?: T;
-              reference?: T;
-              url?: T;
-              menuChildLinks?:
-                | T
-                | {
-                    type?: T;
-                    label?: T;
-                    reference?: T;
-                    url?: T;
-                    id?: T;
-                  };
-            };
-        id?: T;
-      };
-  publishedAt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -653,6 +570,42 @@ export interface Setting {
     siteName: string;
     siteDescription: string;
   };
+  docsMenu?: {
+    menuSections?:
+      | {
+          label: string;
+          description?: string | null;
+          indexItem: number | Doc;
+          menuItems?:
+            | {
+                link: {
+                  type?: ('reference' | 'nolink' | 'external') | null;
+                  label: string;
+                  reference?: {
+                    relationTo: 'docs';
+                    value: number | Doc;
+                  } | null;
+                  url?: string | null;
+                  menuChildLinks?:
+                    | {
+                        type?: ('reference' | 'external') | null;
+                        label: string;
+                        reference?: {
+                          relationTo: 'docs';
+                          value: number | Doc;
+                        } | null;
+                        url?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                };
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   playground?: {
     jsonTest?:
       | {
@@ -679,6 +632,40 @@ export interface SettingsSelect<T extends boolean = true> {
     | {
         siteName?: T;
         siteDescription?: T;
+      };
+  docsMenu?:
+    | T
+    | {
+        menuSections?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              indexItem?: T;
+              menuItems?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          label?: T;
+                          reference?: T;
+                          url?: T;
+                          menuChildLinks?:
+                            | T
+                            | {
+                                type?: T;
+                                label?: T;
+                                reference?: T;
+                                url?: T;
+                                id?: T;
+                              };
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
       };
   playground?:
     | T
@@ -707,10 +694,6 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'docs';
           value: number | Doc;
-        } | null)
-      | ({
-          relationTo: 'menu';
-          value: number | Menu;
         } | null);
     global?: 'settings' | null;
     user?: (number | null) | User;
