@@ -3,7 +3,7 @@ import type { GlobalConfig } from 'payload'
 import { menuLink } from '@/payload/fields/menu-items'
 
 import { autoSetPublishedAt } from '@/payload/hooks/auto-set-publishdate'
-import { revalidateCache, revalidateCacheAfterDelete } from '@/payload/hooks/revalidate-cache'
+import { revalidateCacheForGlobals } from '@/payload/hooks/revalidate-cache'
 
 export const Settings: GlobalConfig = {
   slug: 'settings',
@@ -101,7 +101,6 @@ export const Settings: GlobalConfig = {
               ],
             },
           ],
-          dbName: 'docsMenu',
         },
         {
           name: 'playground',
@@ -126,7 +125,6 @@ export const Settings: GlobalConfig = {
           ],
         },
       ],
-      dbName: 'settings',
     },
     {
       name: 'publishedAt',
@@ -144,7 +142,6 @@ export const Settings: GlobalConfig = {
     },
   ],
   hooks: {
-    afterChange: [revalidateCache],
-    afterDelete: [revalidateCacheAfterDelete],
+    afterChange: [revalidateCacheForGlobals],
   },
 }

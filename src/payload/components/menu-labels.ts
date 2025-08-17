@@ -3,7 +3,7 @@
 import { useRowLabel } from '@payloadcms/ui'
 
 export const MenuSectionLabel = () => {
-  const { data, rowNumber } = useRowLabel<{ link: { label?: string } }>()
+  const { data, rowNumber } = useRowLabel<{ label?: string }>()
 
   return data.label || `Section ${String(rowNumber).padStart(2, '0')} `
 }
