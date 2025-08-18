@@ -13,6 +13,7 @@ export default async function Layout({
 }) {
   const menu = await getDocsMenu()
   const pageTree = mapPageTreeFromDocsMenu(menu)
+
   const tabs = mapTabsFromDocsMenu(menu)
 
   return (

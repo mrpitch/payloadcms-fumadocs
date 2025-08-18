@@ -1,3 +1,4 @@
+// lib/mapping/fuma.ts
 import type { PageTree } from 'fumadocs-core/server'
 import type { Setting, Doc } from '@payload-types'
 
@@ -30,7 +31,7 @@ export interface MapOptions {
   basePath?: string
   /** Label of the root tree (default: "Documentation"). */
   treeName?: string
-  /** Whether to include the index page in the folder's children list (default: true). */
+  /** Whether to include the section index page in the section folder's children list (default: true). */
   includeIndexInChildren?: boolean
 }
 
@@ -41,33 +42,25 @@ const defaults: Required<MapOptions> = {
   includeIndexInChildren: true,
 }
 
-/**
- * Type guard: check if a value is a fully populated `Doc` object
- * instead of just an ID (number).
- */
+/** Type guard for a populated Doc (not just an ID). */
 const isDoc = (v: unknown): v is Doc =>
   !!v && typeof v === 'object' && 'slug' in (v as any) && 'title' in (v as any)
 
-/**
- * Safely coerce a `number | Doc | null` into a `Doc | undefined`.
- * Payload relations can return either an ID (number) or the full object,
- * depending on query depth. With `depth: 5` in `getDocsMenu`, we
- * should always get a full `Doc` object.
- */
+/** Coerce number|Doc|null → Doc|undefined. */
 const toDoc = (maybe: number | Doc | undefined | null): Doc | undefined =>
   isDoc(maybe) ? maybe : undefined
 
 /** Build a canonical URL for a Doc (adds basePath prefix). */
 const docUrl = (d: Doc, basePath: string) => `${basePath}/${d.slug}`
 
-/** Build a Fumadocs PageTree page node */
+/** Build a Fumadocs PageTree page node. */
 const page = (name: string, url: string): PageTree.Item => ({
   type: 'page',
   name,
   url,
 })
 
-/** Build an external page node (with `external: true`) */
+/** Build an external page node (with `external: true` so UI shows an icon). */
 const externalPage = (name: string, url: string): PageTree.Item => ({
   type: 'page',
   name,
@@ -76,15 +69,40 @@ const externalPage = (name: string, url: string): PageTree.Item => ({
 })
 
 /**
+ * Map a `menuChildLinks` array (mixed reference/external) to PageTree nodes.
+ * - reference → internal page
+ * - external  → external page (with icon)
+ */
+function mapChildLinks(
+  links: NonNullable<
+    NonNullable<DocsMenu['menuSections']>[number]['menuItems']
+  >[number]['link']['menuChildLinks'],
+  basePath: string,
+): PageTree.Node[] {
+  const out: PageTree.Node[] = []
+  for (const child of links ?? []) {
+    if (child.type === 'reference') {
+      const d = toDoc(child.reference?.value as any)
+      if (d) out.push(page(d.title, docUrl(d, basePath)))
+    } else if (child.type === 'external' && child.url) {
+      out.push(externalPage(child.label, child.url))
+    }
+  }
+  return out
+}
+
+/**
  * Map the Payload `docsMenu` into a Fumadocs `PageTree.Root`.
  *
  * Each `menuSection` becomes a root-level folder (with `root: true`),
  * which Fumadocs will render as a "Sidebar Tab".
  *
- * - `reference` links map to page nodes.
+ * - `reference` links map to page nodes. If they also have `menuChildLinks`,
+ *   they become a folder whose `index` is the referenced doc page, and whose
+ *   `children` are ONLY the mapped child links (no duplication of the index).
  * - `nolink` items map to folders with their `menuChildLinks`.
- * - `external` links map to pages with an absolute URL.
- * - `indexItem` is set as the folder's `.index` (landing page).
+ * - `external` links map to pages with an absolute URL and `external: true`.
+ * - `indexItem` is set as the section folder's `.index` (landing page).
  */
 export function mapPageTreeFromDocsMenu(
   docsMenu: DocsMenu | undefined,
@@ -103,19 +121,29 @@ export function mapPageTreeFromDocsMenu(
       switch (link?.type) {
         case 'reference': {
           const d = toDoc(link.reference?.value as any)
-          if (d) folderChildren.push(page(d.title, docUrl(d, basePath)))
+
+          // Reference with children → render as folder with index = referenced page,
+          // and children = mapped child links (WITHOUT duplicating the index).
+          if (d && (link.menuChildLinks?.length ?? 0) > 0) {
+            const subChildren = mapChildLinks(link.menuChildLinks, basePath)
+            const label = link.label || d.title
+            const idx = page(d.title, docUrl(d, basePath))
+            const subFolder: PageTree.Folder = {
+              type: 'folder',
+              name: label,
+              index: idx,
+              children: subChildren, // IMPORTANT: no index duplication here
+            }
+            folderChildren.push(subFolder)
+          } else if (d) {
+            // No children → plain page
+            folderChildren.push(page(d.title, docUrl(d, basePath)))
+          }
           break
         }
+
         case 'nolink': {
-          const subChildren: PageTree.Node[] = []
-          for (const child of link.menuChildLinks ?? []) {
-            if (child.type === 'reference') {
-              const d = toDoc(child.reference?.value as any)
-              if (d) subChildren.push(page(d.title, docUrl(d, basePath)))
-            } else if (child.type === 'external' && child.url) {
-              subChildren.push(externalPage(child.label, child.url))
-            }
-          }
+          const subChildren = mapChildLinks(link.menuChildLinks, basePath)
           folderChildren.push({
             type: 'folder',
             name: link.label,
@@ -123,10 +151,12 @@ export function mapPageTreeFromDocsMenu(
           })
           break
         }
+
         case 'external': {
           if (link.url) folderChildren.push(externalPage(link.label, link.url))
           break
         }
+
         default:
           break
       }
@@ -139,13 +169,18 @@ export function mapPageTreeFromDocsMenu(
       children: folderChildren,
     }
 
-    // Add the index page if one exists
+    // Add the section index page if one exists
     if (indexDoc) {
       const idx = page(indexDoc.title, docUrl(indexDoc, basePath))
       folder.index = idx
 
+      // Only for SECTION folders we still respect includeIndexInChildren.
       if (includeIndexInChildren) {
-        const dup = folderChildren.some((n) => n.type === 'page' && n.url === idx.url)
+        const dup = folderChildren.some(
+          (n) =>
+            (n.type === 'page' && n.url === idx.url) ||
+            (n.type === 'folder' && n.index?.type === 'page' && n.index.url === idx.url),
+        )
         if (!dup) folder.children = [idx, ...folderChildren]
       }
     }
@@ -181,11 +216,20 @@ export function mapTabsFromDocsMenu(
     const indexDoc = toDoc(section.indexItem)
     addDoc(indexDoc)
 
-    // Walk menu items and collect URLs
+    // Walk menu items and collect URLs (handles reference-with-children)
     for (const item of section.menuItems ?? []) {
       const link = item.link
       if (link?.type === 'reference') {
-        addDoc(toDoc(link.reference?.value as any))
+        const d = toDoc(link.reference?.value as any)
+        addDoc(d)
+
+        // reference with children → include their URLs too
+        if ((link.menuChildLinks?.length ?? 0) > 0) {
+          for (const child of link.menuChildLinks ?? []) {
+            if (child.type === 'reference') addDoc(toDoc(child.reference?.value as any))
+            else if (child.type === 'external' && child.url) urls.add(child.url)
+          }
+        }
       } else if (link?.type === 'nolink') {
         for (const child of link.menuChildLinks ?? []) {
           if (child.type === 'reference') addDoc(toDoc(child.reference?.value as any))
