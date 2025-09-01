@@ -1,12 +1,13 @@
 /**
  * PayloadCMS Seeding Service - Improved Version
- * 
+ *
  * Based on robust seeding patterns with proper type safety and relationship handling
  */
 
 import { Payload } from 'payload'
 import type { Doc, User, Setting } from '@payload-types'
 import { readFileSync } from 'fs'
+import type { MenuItem } from './types'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -21,22 +22,22 @@ const __dirname = dirname(__filename)
 const loadDocsData = () => {
   try {
     const dataDir = join(__dirname, 'data', 'docs')
-    const gettingStartedData = JSON.parse(readFileSync(join(dataDir, 'getting-started.json'), 'utf-8'))
-    const advancedTopicsData = JSON.parse(readFileSync(join(dataDir, 'advanced-topics.json'), 'utf-8'))
+    const gettingStartedData = JSON.parse(
+      readFileSync(join(dataDir, 'getting-started.json'), 'utf-8'),
+    )
+    const advancedTopicsData = JSON.parse(
+      readFileSync(join(dataDir, 'advanced-topics.json'), 'utf-8'),
+    )
     // const dataDir = join(__dirname, 'data')
     // const data = JSON.parse(readFileSync(join(dataDir, 'docs.json'), 'utf-8'))
 
     // Merge all documentation arrays
-    return [
-      ...gettingStartedData,
-      ...advancedTopicsData
-    ]
+    return [...gettingStartedData, ...advancedTopicsData]
   } catch (error) {
     console.error('Error loading docs data:', error)
     return []
   }
 }
-
 
 export type SeedUser = Omit<User, 'id' | 'updatedAt' | 'createdAt' | 'sizes'> & {
   password: string
@@ -51,12 +52,12 @@ export type SeedSetting = Omit<Setting, 'id' | 'updatedAt' | 'createdAt'> & {
     menuSections: Array<{
       label: string
       description?: string
-      indexItem?: string  // slug reference
+      indexItem?: string // slug reference
       menuItems: Array<{
         type: 'reference'
         reference: {
           relationTo: 'docs'
-          value: string  // slug reference
+          value: string // slug reference
         }
       }>
     }>
@@ -118,7 +119,7 @@ export const seed = async (payload: Payload): Promise<void> => {
     // 2. Create documentation pages
     console.log('\n📄 Creating documentation pages...')
     const createdDocsMap = new Map<string, any>()
-    
+
     // Load docs data when needed
     const docsData = loadDocsData()
 
@@ -146,7 +147,7 @@ export const seed = async (payload: Payload): Promise<void> => {
               _status: 'published',
             },
           })
-          
+
           createdDocsMap.set(docData.slug, createdDoc)
           console.log(`✅ Created: ${docData.title} (${docData.slug})`)
         } catch (error) {
@@ -169,14 +170,14 @@ export const seed = async (payload: Payload): Promise<void> => {
 
       // Check if menu is already configured
       const hasExistingMenu = (existingSettings as any)?.docsMenu?.menuSections?.length > 0
-      
+
       if (!hasExistingMenu) {
         // Process menu sections with proper references
         const processedMenuSections = []
 
         for (const section of menuData.menuSections) {
           console.log(`  📁 Processing section: ${section.label}`)
-          
+
           // Find index item by slug
           let indexItemId = null
           if (section.indexItem && createdDocsMap.has(section.indexItem)) {
@@ -185,12 +186,16 @@ export const seed = async (payload: Payload): Promise<void> => {
 
           // Process menu items
           const processedMenuItems = []
-          
+
           // Helper function to process child links recursively
           const processChildLinks = (childLinks: any[]) => {
             const processedChildren = []
             for (const child of childLinks) {
-              if (child.type === 'reference' && child.reference && child.reference.relationTo === 'docs') {
+              if (
+                child.type === 'reference' &&
+                child.reference &&
+                child.reference.relationTo === 'docs'
+              ) {
                 const docSlug = child.reference.value
                 if (createdDocsMap.has(docSlug)) {
                   const doc = createdDocsMap.get(docSlug)
@@ -207,15 +212,21 @@ export const seed = async (payload: Payload): Promise<void> => {
             }
             return processedChildren
           }
-          
-          for (const item of section.menuItems) {
-            if (item.type === 'reference' && item.reference && item.reference.relationTo === 'docs') {
+
+          for (const item of section.menuItems as MenuItem[]) {
+            if (
+              item.type === 'reference' &&
+              item.reference &&
+              item.reference.relationTo === 'docs'
+            ) {
               const docSlug = item.reference.value
-              
+
               if (createdDocsMap.has(docSlug)) {
                 const doc = createdDocsMap.get(docSlug)
-                const menuChildLinks = item.menuChildLinks ? processChildLinks(item.menuChildLinks) : []
-                
+                const menuChildLinks = item.menuChildLinks
+                  ? processChildLinks(item.menuChildLinks)
+                  : []
+
                 processedMenuItems.push({
                   link: {
                     type: 'reference',
@@ -227,22 +238,28 @@ export const seed = async (payload: Payload): Promise<void> => {
                     menuChildLinks,
                   },
                 })
-                console.log(`    ✅ Added menu item: ${doc.title}${menuChildLinks.length > 0 ? ` (with ${menuChildLinks.length} children)` : ''}`)
+                console.log(
+                  `    ✅ Added menu item: ${doc.title}${menuChildLinks.length > 0 ? ` (with ${menuChildLinks.length} children)` : ''}`,
+                )
               } else {
                 console.warn(`    ⚠️  Document not found for slug: "${docSlug}"`)
               }
             } else if (item.type === 'folder') {
               // Handle folder-type items (no direct link, only children)
-              const menuChildLinks = item.menuChildLinks ? processChildLinks(item.menuChildLinks) : []
-              
+              const menuChildLinks = item.menuChildLinks
+                ? processChildLinks(item.menuChildLinks)
+                : []
+
               processedMenuItems.push({
                 link: {
                   type: 'nolink',
-                  label: item.label,
+                  label: item?.label || '',
                   menuChildLinks,
                 },
               })
-              console.log(`    ✅ Added folder: ${item.label} (with ${menuChildLinks.length} children)`)
+              console.log(
+                `    ✅ Added folder: ${item?.label || ''} (with ${menuChildLinks.length} children)`,
+              )
             }
           }
 
@@ -260,13 +277,12 @@ export const seed = async (payload: Payload): Promise<void> => {
           slug: 'settings',
           data: {
             settings: {
-
-            siteName: 'Documentation Site',
-            siteDescription: 'Comprehensive documentation and guides',
+              siteName: 'Documentation Site',
+              siteDescription: 'Comprehensive documentation and guides',
             },
             docsMenu: {
               menuSections: processedMenuSections,
-            }
+            },
           } as any,
         })
 
@@ -274,7 +290,6 @@ export const seed = async (payload: Payload): Promise<void> => {
       } else {
         console.log('� Menu structure already exists')
       }
-
     } catch (error) {
       console.error('❌ Error creating menu structure:', error)
       throw error
@@ -285,7 +300,6 @@ export const seed = async (payload: Payload): Promise<void> => {
     console.log(`   - ${createdDocsMap.size} documentation pages processed`)
     console.log(`   - ${menuData.menuSections.length} menu sections configured`)
     console.log(`   - Settings global updated`)
-
   } catch (error) {
     console.error('💥 Seeding failed:', error)
     throw error
@@ -338,7 +352,9 @@ export const clearSeed = async (payload: Payload): Promise<void> => {
 /**
  * Validate seeded data
  */
-export const validateSeed = async (payload: Payload): Promise<{
+export const validateSeed = async (
+  payload: Payload,
+): Promise<{
   docsCount: number
   menuSections: number
   errors: string[]
@@ -405,7 +421,7 @@ export const validateSeed = async (payload: Payload): Promise<{
       console.log('✅ Validation successful - all data is properly seeded')
     } else {
       console.log('⚠️  Validation found issues:')
-      errors.forEach(error => console.log(`   - ${error}`))
+      errors.forEach((error) => console.log(`   - ${error}`))
     }
 
     return {
