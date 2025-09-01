@@ -1,0 +1,14 @@
+{
+	"servers": {
+		"postgres": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-postgres@0.6.2",
+				"postgresql://copilot_agent_db_user:copilot_db_pw@127.0.0.1:5432/db_copilot_dev"
+			],
+			"type": "stdio"
+		}
+	},
+	"inputs": []
+}

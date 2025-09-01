@@ -1,28 +1,36 @@
 import type { ReactNode } from 'react'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import { baseOptions } from '@/app/(fumadocs)/layout.config'
-import { getDocsMenu } from '@/lib/utils/getMenu'
-import { mapPageTreeFromDocsMenu, mapTabsFromDocsMenu } from '@/payload/utils/create-docs-menu'
+import { getTree, getSidebarTabs } from '@/payload/utils/fumadocs/source'
 
 export default async function Layout({
   children,
   params,
 }: {
   children: ReactNode
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string[] }>
 }) {
-  const menu = await getDocsMenu()
-  const pageTree = mapPageTreeFromDocsMenu(menu)
+  const { slug } = await params
+  const currentPath = slug ? `/docs/${slug.join('/')}` : '/docs'
+  
+  const [pageTree, sidebarTabsRaw] = await Promise.all([
+    getTree( {currentPath, draft: false }),
+    getSidebarTabs(),
+  ])
 
-  const tabs = mapTabsFromDocsMenu(menu)
+  // Convert urls arrays back to Sets for Fumadocs
+  const sidebarTabs = sidebarTabsRaw.map((tab: any) => ({
+    ...tab,
+    urls: new Set(tab.urls),
+  }))
 
   return (
     <DocsLayout
+      tree={pageTree}
       sidebar={{
         enabled: true,
-        tabs: tabs,
+        tabs: sidebarTabs,
       }}
-      tree={pageTree}
       {...baseOptions}
     >
       {children}

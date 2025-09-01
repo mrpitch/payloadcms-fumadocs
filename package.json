@@ -16,6 +16,7 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation pnpm exec tsx scripts/seed.mts",
     "start:postgres": "docker compose -f docker-compose.yml --env-file .env up -d",
     "stop:postgres": "docker compose -f docker-compose.yml --env-file .env down",
     "stop:postgres:cleanup": "docker compose -f docker-compose.yml --env-file .env down --volumes",
@@ -61,6 +62,7 @@
     "playwright": "1.50.0",
     "playwright-core": "1.50.0",
     "prettier": "^3.4.2",
+    "tsx": "^4.20.3",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.3"

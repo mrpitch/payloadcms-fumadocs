@@ -1,0 +1,1079 @@
+[
+  {
+    "id": "getting-started",
+    "title": "Getting Started",
+    "slug": "getting-started",
+    "excerpt": "Quick overview and first steps to run the documentation platform locally using PayloadCMS and Fumadocs.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Getting Started",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "This guide helps you install, configure, and run the documentation platform locally. It covers key concepts: PayloadCMS for content, Fumadocs for rendering, Tailwind + shadcn for UI components, and Next.js for the app.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Quick Start",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Minimum steps to get the project running locally:",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "ol",
+            "type": "list",
+            "start": 1,
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "type": "listitem",
+                "value": 1,
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Install dependencies: ",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  },
+                  {
+                    "mode": "normal",
+                    "text": "pnpm install",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 16,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              },
+              {
+                "type": "listitem",
+                "value": 2,
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Set environment variables (see ",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  },
+                  {
+                    "mode": "normal",
+                    "text": "test.env",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 1,
+                    "version": 1
+                  },
+                  {
+                    "mode": "normal",
+                    "text": ") and ensure DATABASE_URL points to Postgres.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              },
+              {
+                "type": "listitem",
+                "value": 3,
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Run seed script to populate example content:",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  },
+                  {
+                    "mode": "normal",
+                    "text": "pnpm seed",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 16,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              },
+              {
+                "type": "listitem",
+                "value": 4,
+                "format": "",
+                "indent": 0,
+                "version": 1,
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Start the app:",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  },
+                  {
+                    "mode": "normal",
+                    "text": "pnpm dev",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 16,
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr"
+              }
+            ],
+            "listType": "number",
+            "direction": "ltr"
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Core Concepts",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "tag": "h3",
+            "type": "heading",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "PayloadCMS",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "PayloadCMS stores documentation content as Lexical rich-text JSON. Pages are entries in the `docs` collection with fields like `title`, `slug`, and `copy` (the Lexical JSON).",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h3",
+            "type": "heading",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Fumadocs",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Fumadocs renders the Lexical content into a documentation UI. The integration exposes `getTree()` and `getPage()` utilities that map Payload data to the Fumadocs page tree and pages.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Next Steps",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Continue with the following pages in the Getting Started section to learn installation, configuration, examples, and troubleshooting.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 1
+  },
+  {
+    "id": "introduction",
+    "title": "Introduction",
+    "slug": "introduction",
+    "excerpt": "Overview and goals of the documentation platform.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Introduction",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "This project bundles a modern docs stack: Next.js (App Router), TailwindCSS + shadcn UI, PayloadCMS for content, and Fumadocs for the documentation UI.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Project Goals",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "- Make documentation editable in PayloadCMS.\n- Render docs fast with Next.js + Fumadocs.\n- Provide a robust seed and menu system for quick onboarding.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 2
+  },
+  {
+    "id": "installation",
+    "title": "Installation",
+    "slug": "installation",
+    "excerpt": "Install dependencies and prepare Postgres and environment variables.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Installation",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Follow these steps to install and configure the project. If you use Docker, the included docker-compose will bring up Postgres and the app.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Install Dependencies",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Run:",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              },
+              {
+                "mode": "normal",
+                "text": " pnpm install",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 16,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 3
+  },
+  {
+    "id": "configuration",
+    "title": "Configuration",
+    "slug": "configuration",
+    "excerpt": "Configure environment variables, Payload, and Next.js settings.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Configuration",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Environment",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Copy `test.env` to `.env.local` and update values for `DATABASE_URL`, `PAYLOAD_TOKEN`, and `PAYLOAD_BASE_URL`.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 4
+  },
+  {
+    "id": "first-steps",
+    "title": "First Steps",
+    "slug": "first-steps",
+    "excerpt": "Create your first page and learn how content maps to Fumadocs.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "First Steps",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Open the Payload admin at ",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              },
+              {
+                "mode": "normal",
+                "text": "/admin",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 16,
+                "version": 1
+              },
+              {
+                "mode": "normal",
+                "text": " and create a new Docs entry under the Docs collection.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 5
+  },
+  {
+    "id": "basic-usage",
+    "title": "Basic Usage",
+    "slug": "basic-usage",
+    "excerpt": "Essential workflows for content authors and editors.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Basic Usage",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Editing Content",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Use the Lexical rich text editor in Payload to add headings, lists, links, and inline code (use the toolbar to mark text as code).",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 6
+  },
+  {
+    "id": "examples",
+    "title": "Examples",
+    "slug": "examples",
+    "excerpt": "Short examples showing how to write pages for Fumadocs.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Examples",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Inline code example",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "You can include inline code like ",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              },
+              {
+                "mode": "normal",
+                "text": "pnpm dev",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 16,
+                "version": 1
+              },
+              {
+                "mode": "normal",
+                "text": " inside a paragraph.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 7
+  },
+  {
+    "id": "troubleshooting",
+    "title": "Troubleshooting",
+    "slug": "troubleshooting",
+    "excerpt": "Common errors and how to fix them when working with the docs stack.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Troubleshooting",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Common Errors",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "If you see errors about Lexical parsing (for example \"type 'code' not found\"), it usually means seed data includes unsupported node types. Use inline code (format: 16) or update the editor features.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 8
+  },
+  {
+    "id": "best-practices",
+    "title": "Best Practices",
+    "slug": "best-practices",
+    "excerpt": "Editorial and structural recommendations for maintainable docs.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Best Practices",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Organize pages by task or persona, keep sections small, and use headings (h2/h3) to build a useful TOC for readers.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 9
+  },
+  {
+    "id": "faq",
+    "title": "FAQ",
+    "slug": "faq",
+    "excerpt": "Frequently asked questions about the docs stack.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "FAQ",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Q: How do I update the menu?\nA: Edit `src/lib/seed/data/menu.json` and re-run the seed or update the Settings global in the admin.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 10
+  }
+]

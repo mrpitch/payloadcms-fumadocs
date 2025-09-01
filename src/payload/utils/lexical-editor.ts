@@ -9,6 +9,7 @@ import {
   UnderlineFeature,
   BlockquoteFeature,
   ParagraphFeature,
+  InlineCodeFeature,
 } from '@payloadcms/richtext-lexical'
 
 type LexicalOptions = NonNullable<Parameters<typeof lexicalEditor>[0]>
@@ -28,5 +29,6 @@ export const lexicalEditorConfig = lexicalEditor({
     LinkFeature(),
     ItalicFeature(),
     BlockquoteFeature(),
+    InlineCodeFeature(),
   ],
 })
