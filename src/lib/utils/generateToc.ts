@@ -1,8 +1,4 @@
-type TocEntry = {
-  title: string
-  depth: number
-  url: string
-}
+import type { TOCItemType } from 'fumadocs-core/server'
 
 // Type definitions for Lexical document structure
 type LexicalTextNode = {
@@ -25,7 +21,7 @@ type LexicalDocument = {
   }
 }
 
-export function generateTocFromLexical(doc: LexicalDocument): TocEntry[] {
+export function generateTocFromLexical(doc: LexicalDocument): TOCItemType[] {
   return doc.root.children
     .filter((node): node is LexicalHeadingNode => node.type === 'heading')
     .map((heading) => {
@@ -42,7 +38,7 @@ export function generateTocFromLexical(doc: LexicalDocument): TocEntry[] {
 }
 
 // Alternative function that works with the actual PayloadCMS structure
-export function generateTocFromPayload(doc: LexicalDocument): TocEntry[] {
+export function generateTocFromPayload(doc: LexicalDocument): TOCItemType[] {
   if (!doc?.root?.children) {
     return []
   }

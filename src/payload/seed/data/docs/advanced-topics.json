@@ -1,0 +1,372 @@
+[
+  {
+    "id": "api-reference",
+    "title": "API Reference",
+    "slug": "api-reference",
+    "excerpt": "REST and GraphQL endpoints exposed by the platform and examples for integration.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "API Reference",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "This section describes the main endpoints and usage examples for integrating with the documentation backend. Both REST and GraphQL endpoints are available.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Fetching Pages (REST)",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Example: GET /api/docs - returns a list of docs. Use query params to filter by slug or status.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "GraphQL",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "A simple GraphQL query to fetch a page by slug:",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "query { docs(where: { slug: \"getting-started\" }) { title slug copy } }",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 16,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 100
+  },
+  {
+    "id": "authentication",
+    "title": "Authentication & Security",
+    "slug": "authentication",
+    "excerpt": "Configure authentication, roles, and secure access to the admin and APIs.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Authentication & Security",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Admin Access",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "The Payload admin requires a user with an email and password. Seed creates a default admin (check the seeder for credentials). Protect the admin with environment variables in production.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 101
+  },
+  {
+    "id": "performance-optimization",
+    "title": "Performance Optimization",
+    "slug": "performance-optimization",
+    "excerpt": "Strategies for caching, queries, and rendering performance.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Performance Optimization",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "tag": "h2",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Caching",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Use Next.js caching (`revalidate`) and caching at the Fumadocs source layer to reduce payload requests. Consider CDN caching for static assets.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 102
+  },
+  {
+    "id": "testing-guide",
+    "title": "Testing Guide",
+    "slug": "testing-guide",
+    "excerpt": "Testing strategies and implementation patterns for the docs stack.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Testing Guide",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Include unit tests for utilities (TOC generation, tree mapping) and Playwright smoke tests for the /docs routes. Use the provided `vitest` configuration to run tests locally.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 103
+  },
+  {
+    "id": "monitoring-logging",
+    "title": "Monitoring & Logging",
+    "slug": "monitoring-logging",
+    "excerpt": "Monitoring, observability and logging best practices.",
+    "content": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "tag": "h1",
+            "type": "heading",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Monitoring & Logging",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Instrument your Next.js server and Payload API endpoints with metrics and logs. Consider services like Prometheus, Grafana, or a hosted APM.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": "ltr",
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": "ltr"
+      }
+    },
+    "order": 104
+  }
+]

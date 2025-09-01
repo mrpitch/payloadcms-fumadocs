@@ -4,16 +4,15 @@ import { draftMode } from 'next/headers'
 
 import { DocsPage, DocsBody, DocsDescription, DocsTitle } from 'fumadocs-ui/page'
 
-import { getCollectionBySlug, getSlugs } from '@/lib/utils/getCollection'
+import { getPage, getPageSlugs } from '@/payload/utils/fumadocs/source'
 import type { Doc } from '@payload-types'
 
 import { RichText } from '@/components/richtext'
-import { generateTocFromLexical } from '@/lib/utils/generateToc'
 import { generateMeta } from '@/lib/utils/generateMeta'
 
 type Args = {
   params: Promise<{
-    slug?: string
+    slug?: string[]
   }>
 }
 
@@ -21,57 +20,56 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug } = await paramsPromise
   const { isEnabled } = await draftMode()
 
-  const doc = await getCollectionBySlug({
-    collection: 'docs',
-    slug: slug || '',
-    draft: isEnabled,
-  })
+  if (!slug || slug.length === 0) {
+    return { title: 'Documentation' }
+  }
 
-  return generateMeta({ doc: doc })
+  const page = await getPage(slug, isEnabled)
+
+  if (!page) {
+    return { title: 'Not Found' }
+  }
+
+  return generateMeta({ 
+    doc: { 
+      title: page.title, 
+      excerpt: page.description 
+    } as Pick<Doc, 'title' | 'excerpt'>
+  })
 }
 
 export async function generateStaticParams() {
-  const docs = await getSlugs('docs')
-
-  return (
-    docs.docs
-      ?.filter((doc: Pick<Doc, 'id' | 'slug'>) => {
-        return doc && 'slug' in doc && typeof doc.slug === 'string'
-      })
-      .map((doc: Pick<Doc, 'id' | 'slug'>) => ({ slug: [(doc as { slug: string }).slug] })) || []
-  )
+  const slugs = await getPageSlugs()
+  return slugs.map(slug => ({ slug }))
 }
 
-export default async function Doc({ params: paramsPromise }: Args) {
+export default async function DocPage({ params: paramsPromise }: Args) {
   const { slug } = await paramsPromise
   const { isEnabled } = await draftMode()
-  const page = await getCollectionBySlug({
-    collection: 'docs',
-    slug: slug?.[0] || '',
-    draft: isEnabled,
-  })
+  
+  if (!slug || slug.length === 0) {
+    notFound()
+  }
+
+  const page = await getPage(slug, isEnabled)
 
   if (!page) {
     notFound()
   }
 
-  const toc = generateTocFromLexical(page?.copy || { root: { children: [] } })
-
   return (
     <DocsPage
-      toc={toc}
+      toc={page.toc}
       full={false}
       tableOfContent={{
         single: true,
         style: 'clerk',
       }}
     >
-      <DocsTitle>{page?.title}</DocsTitle>
-      <DocsDescription>{page?.excerpt}</DocsDescription>
+      <DocsTitle>{page.title}</DocsTitle>
+      <DocsDescription>{page.description}</DocsDescription>
       <DocsBody>
-        <RichText data={page?.copy} />
-
-        {/* <pre>{JSON.stringify(page?.copy, null, 2)}</pre> */}
+        <RichText data={page.body} />
       </DocsBody>
     </DocsPage>
   )
