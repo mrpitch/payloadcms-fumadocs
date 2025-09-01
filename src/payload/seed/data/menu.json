@@ -1,0 +1,138 @@
+{
+  "menuSections": [
+    {
+      "label": "Getting Started",
+      "description": "Everything you need to know to get up and running quickly",
+      "indexItem": "getting-started",
+      "menuItems": [
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "getting-started"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "introduction"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "installation"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "configuration"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "first-steps"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "basic-usage"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "examples"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "troubleshooting"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "best-practices"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "faq"
+          },
+          "menuChildLinks": []
+        }
+      ]
+    },
+    {
+      "label": "Advanced Topics",
+      "description": "Deep dive into advanced features and implementation patterns",
+      "indexItem": "api-reference",
+      "menuItems": [
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "api-reference"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "authentication"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "performance-optimization"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "testing-guide"
+          },
+          "menuChildLinks": []
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "relationTo": "docs",
+            "value": "monitoring-logging"
+          },
+          "menuChildLinks": []
+        }
+      ]
+    }
+  ]
+}
