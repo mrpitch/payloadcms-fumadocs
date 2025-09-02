@@ -1,3 +1,8 @@
+---
+description: shadcn/ui component conventions and patterns used in the project's UI components
+globs: src/components/ui/**/*.tsx
+alwaysApply: false
+---
 # shadcn/ui Component Conventions
 
 This rule documents the conventions, patterns, and best practices used in shadcn/ui components throughout the project, based on analysis of the button and tabs components.
@@ -587,8 +592,4 @@ export { Button, buttonVariants }
 "rounded-lg"
 "rounded-md"
 ```
----
-description: shadcn/ui component conventions and patterns used in the project's UI components
-globs: src/components/ui/**/*.tsx
-alwaysApply: false
----
+
