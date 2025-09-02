@@ -1,0 +1,222 @@
+---
+description: Project directory structure and important files for PayloadCMS + Fumadocs integration
+globs: **/*
+alwaysApply: false
+---
+# Project Directory Structure
+
+This rule documents the directory structure and important files in the PayloadCMS + Fumadocs integration project.
+
+## Root Directory Structure
+
+- Configuration files (TypeScript, Next.js, ESLint, etc.)
+- Documentation in docs/ folder
+- Utility scripts in scripts/ folder
+- Testing setup with Vitest and Playwright
+
+```
+payloadcms-fumadocs/
+├── docs/                      # Project documentation
+├── scripts/                   # Utility scripts
+├── src/                       # Source code
+├── tests/                     # Test files
+├── docker-compose.yml         # Docker services configuration
+├── package.json               # Project dependencies and scripts
+```
+
+## Source Code Structure (`src/`)
+
+### App Directory (`src/app/`)
+
+- App Routes: Next.js app router with route groups for Fumadocs and PayloadCMS
+- Components: Reusable UI components and theme system
+- Library: Utilities, hooks, and styling with multiple theme variants
+- PayloadCMS: Content models, admin interface, and integration utilities
+- 
+```
+src/app/
+├── (fumadocs)/               # Fumadocs documentation routes
+│   ├── (home)/               # Home page route group
+│   │   ├── layout.config.tsx # Fumadocs layout configuration
+│   │   ├── layout.tsx        # Home layout component
+│   │   └── page.tsx          # Home page component
+│   ├── docs/                 # Documentation pages
+│   │   └── [...slug]/        # Dynamic route for all docs
+│   │       ├── layout.tsx    # Docs layout
+│   │       └── page.tsx      # Docs page component
+│   ├── layout.config.tsx     # Fumadocs app layout config
+│   └── layout.tsx            # Fumadocs app layout
+├── (payload)/                 # PayloadCMS admin routes
+│   ├── admin/                 # Admin interface
+│   │   ├── [[...segments]]/  # Dynamic admin routes
+│   │   │   ├── not-found.tsx # Admin 404 page
+│   │   │   └── page.tsx      # Admin page wrapper
+│   │   └── importMap.js      # Admin import mapping
+│   ├── api/                   # API routes
+│   │   ├── [...slug]/         # Dynamic API routes
+│   │   │   └── route.ts      # API route handler
+│   │   ├── graphql/          # GraphQL endpoint
+│   │   │   └── route.ts      # GraphQL route handler
+│   │   └── graphql-playground/ # GraphQL playground
+│   │       └── route.ts      # Playground route
+│   ├── custom.scss            # Admin custom styles
+│   └── layout.tsx             # PayloadCMS app layout
+└── api/                       # Custom API routes
+    └── my-route/              # Example custom route
+        └── route.ts           # Route handler
+```
+
+### Components Directory (`src/components/`)
+```
+src/components/
+├── ui/                        # Reusable UI components
+│   ├── button.tsx             # Button component
+│   └── tabs.tsx               # Tabs component
+├── accordion.tsx              # Accordion component
+├── banner.tsx                 # Banner component
+├── callout.tsx                # Callout component
+├── card.tsx                   # Card component
+├── richtext.tsx               # Rich text component
+├── steps.tsx                  # Steps component
+└── tabs.tsx                   # Tabs component
+```
+
+### Library Directory (`src/lib/`)
+```
+src/lib/
+├── hooks/                     # Custom React hooks
+│   └── use-copy-button.ts     # Copy button hook
+├── styles/                    # Styling and themes
+│   ├── fonts/                 # Custom font definitions
+│   │   ├── bubblegum.ts       # Bubblegum font
+│   │   ├── caffeine.ts        # Caffeine font
+│   │   ├── index.ts           # Font exports
+│   │   ├── nature.ts          # Nature font
+│   │   ├── neobrutalism.ts    # Neobrutalism font
+│   │   └── vintagepaper.ts    # Vintage paper font
+│   ├── global.css             # Global styles
+│   ├── theme-bubblegum.css    # Bubblegum theme
+│   ├── theme-caffeine.css     # Caffeine theme
+│   ├── theme-nature.css       # Nature theme
+│   ├── theme-neobrutalism.css # Neobrutalism theme
+│   └── theme-vintagepaper.css # Vintage paper theme
+└── utils/                     # Utility functions
+    ├── cn.ts                  # Class name utility
+    ├── constants.ts            # Application constants
+    ├── generateMeta.ts         # Meta tag generation
+    ├── generateToc.ts          # Table of contents generation
+    ├── getCollection.ts        # Collection retrieval
+    ├── getGlobals.ts          # Global data retrieval
+    └── getMenu.ts              # Menu data retrieval
+```
+
+### PayloadCMS Directory (`src/payload/`)
+```
+src/payload/
+├── components/                 # PayloadCMS components
+│   ├── menu-labels.ts         # Menu label definitions
+│   └── test.tsx               # Test component
+├── content-model/              # Content model definitions
+│   ├── Articles.ts             # Articles collection
+│   ├── Docs.ts                 # Documentation collection
+│   ├── Media.ts                # Media collection
+│   ├── Menu.ts                 # Menu collection
+│   ├── Settings.ts             # Settings collection
+│   └── Users.ts                # Users collection
+├── fields/                     # Custom field types
+│   └── menu-items.ts          # Menu items field
+├── hooks/                      # PayloadCMS hooks
+│   ├── auto-set-author.ts      # Auto-author assignment
+│   ├── auto-set-publishdate.ts # Auto-publish date
+│   └── revalidate-cache.ts     # Cache revalidation
+├── seed/                       # Database seeding
+│   ├── data/                   # Seed data files
+│   │   ├── docs/               # Documentation seed data
+│   │   │   ├── advanced-topics.json
+│   │   │   ├── getting-started-fixed.json
+│   │   │   ├── getting-started-new.json
+│   │   │   └── getting-started.json
+│   │   ├── docs-schema.json    # Documentation schema
+│   │   ├── docs.json           # Docs collection data
+│   │   └── menu.json           # Menu data
+│   ├── documentation.json      # Documentation structure
+│   ├── index.ts                # Seed script entry
+│   └── types.ts                # Seed types
+├── utils/                      # PayloadCMS utilities
+│   ├── constants.ts            # PayloadCMS constants
+│   ├── deepMerge.ts            # Deep merge utility
+│   ├── fumadocs/               # Fumadocs integration
+│   │   ├── index.ts            # Main integration
+│   │   ├── source.ts           # Data source
+│   │   ├── test.ts             # Integration tests
+│   │   └── utils.ts            # Integration utilities
+│   └── lexical-editor.ts       # Lexical editor setup
+├── payload-types.ts            # Generated PayloadCMS types
+└── payload.config.ts           # PayloadCMS configuration
+```
+
+## Documentation Directory (`docs/`)
+```
+docs/
+├── fumadocs-integration.md     # Fumadocs integration guide
+├── fumadocs-utils.md           # Fumadocs utilities documentation
+├── integration-summary.md      # Integration overview
+├── project.md                  # Project documentation
+├── seed-content.md             # Content seeding guide
+└── technical-overview.md       # Technical architecture
+```
+
+## Scripts Directory (`scripts/`)
+```
+scripts/
+└── seed.mts                    # Database seeding script
+```
+
+## Tests Directory (`tests/`)
+```
+tests/
+├── e2e/                        # End-to-end tests
+│   └── frontend.e2e.spec.ts    # Frontend E2E tests
+└── int/                        # Integration tests
+    └── api.int.spec.ts         # API integration tests
+```
+
+## Important Configuration Files
+
+### Build & Development
+- `package.json` - Project dependencies, scripts, and metadata
+- `tsconfig.json` - TypeScript configuration
+- `next.config.mjs` - Next.js configuration
+- `eslint.config.mjs` - Code linting rules
+- `postcss.config.mjs` - CSS processing configuration
+
+### Testing
+- `vitest.config.mts` - Unit testing configuration
+- `playwright.config.ts` - E2E testing configuration
+- `test.env` - Test environment variables
+
+### Content Management
+- `src/payload/payload.config.ts` - PayloadCMS configuration
+- `src/payload/content-model/` - Content model definitions
+- `src/payload/seed/` - Database seeding configuration
+
+### Documentation
+- `src/app/(fumadocs)/layout.config.tsx` - Fumadocs configuration
+- `src/lib/utils/fumadocs/` - Fumadocs integration utilities
+
+## Key Development Patterns
+
+1. **Route Groups**: Uses Next.js route groups `(fumadocs)` and `(payload)` for organization
+2. **Content Models**: PayloadCMS collections defined in `src/payload/content-model/`
+3. **Theme System**: Multiple CSS themes in `src/lib/styles/` with font variants
+4. **Integration Layer**: Fumadocs utilities in `src/lib/utils/fumadocs/`
+5. **Seeding System**: Database seeding scripts and data in `src/payload/seed/`
+
+## File Naming Conventions
+
+- **Components**: PascalCase with `.tsx` extension
+- **Utilities**: camelCase with `.ts` extension
+- **Styles**: kebab-case with `.css` extension
+- **Configuration**: kebab-case with appropriate extensions
+- **Tests**: descriptive names with `.spec.ts` or `.test.ts` extensions
+

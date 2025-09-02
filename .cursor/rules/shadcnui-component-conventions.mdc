@@ -1,0 +1,594 @@
+# shadcn/ui Component Conventions
+
+This rule documents the conventions, patterns, and best practices used in shadcn/ui components throughout the project, based on analysis of the button and tabs components.
+
+## Component Architecture Patterns
+
+### 1. shadcn/ui Component Structure
+```typescript
+// Standard shadcn/ui component structure
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"  // For polymorphic components
+import { cva, type VariantProps } from "class-variance-authority"  // For variant management
+import * as Primitive from "@radix-ui/react-primitive"  // For Radix UI components
+
+import { cn } from "@/lib/utils/cn"
+
+// 1. Define variants using CVA (for components with variants)
+const componentVariants = cva(
+  "base-classes",
+  {
+    variants: {
+      // variant definitions
+    },
+    defaultVariants: {
+      // default values
+    }
+  }
+)
+
+// 2. Component function with proper typing
+function Component({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<typeof Primitive> &
+  VariantProps<typeof componentVariants> & {
+    asChild?: boolean
+  }) {
+  // 3. Conditional rendering logic (for polymorphic components)
+  const Comp = asChild ? Slot : "button"
+
+  return (
+    <Comp
+      data-slot="component"
+      className={cn(componentVariants({ variant, size, className }))}
+      {...props}
+    />
+  )
+}
+
+// 4. Export component and variants
+export { Component, componentVariants }
+```
+
+### 2. Import Conventions
+```typescript
+// ✅ Good: Use namespace import for React
+import * as React from "react"
+
+// ✅ Good: Import specific utilities
+import { cn } from "@/lib/utils/cn"
+
+// ✅ Good: Import Radix UI primitives with namespace
+import * as TabsPrimitive from "@radix-ui/react-tabs"
+
+// ✅ Good: Import CVA with type imports
+import { cva, type VariantProps } from "class-variance-authority"
+
+// ✅ Good: Import Slot for polymorphic behavior
+import { Slot } from "@radix-ui/react-slot"
+```
+
+### 3. Client-Side Rendering
+```typescript
+// ✅ Good: Use "use client" directive for interactive components
+"use client"
+
+// ✅ Good: Import React with namespace
+import * as React from "react"
+```
+
+## Component Types and Patterns
+
+### 1. Variant-Based Components (Button Pattern)
+```typescript
+// ✅ Good: Use CVA for variant management
+const buttonVariants = cva(
+  "base-classes",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground",
+        destructive: "bg-destructive text-white",
+        outline: "border bg-background",
+        secondary: "bg-secondary text-secondary-foreground",
+        ghost: "hover:bg-accent",
+        link: "text-primary underline-offset-4"
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 px-3",
+        lg: "h-10 px-6",
+        icon: "size-9"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+
+// ✅ Good: Component with variant props
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot : "button"
+
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  )
+}
+```
+
+### 2. Primitive Wrapper Components (Tabs Pattern)
+```typescript
+// ✅ Good: Create wrapper components for Radix UI primitives
+function Tabs({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+  return (
+    <TabsPrimitive.Root
+      data-slot="tabs"
+      className={cn("base-classes", className)}
+      {...props}
+    />
+  )
+}
+
+// ✅ Good: Export all related components together
+export { Tabs, TabsList, TabsTrigger, TabsContent }
+```
+
+### 3. Polymorphic Components (asChild Pattern)
+```typescript
+// ✅ Good: Support polymorphic rendering with asChild
+const Comp = asChild ? Slot : "button"
+
+// ✅ Good: Use data-slot for styling hooks
+<Comp
+  data-slot="button"
+  className={cn(buttonVariants({ variant, size, className }))}
+  {...props}
+/>
+
+// ✅ Good: Forward all props
+{...props}
+```
+
+## TypeScript Patterns
+
+### 1. Component Props Typing
+```typescript
+// ✅ Good: Extend native HTML element props
+React.ComponentProps<"button">
+
+// ✅ Good: Extend Radix UI primitive props
+React.ComponentProps<typeof TabsPrimitive.Root>
+
+// ✅ Good: Use VariantProps for CVA variants
+VariantProps<typeof buttonVariants>
+
+// ✅ Good: Add custom props with proper typing
+{
+  asChild?: boolean
+}
+
+// ✅ Good: Combine multiple prop types with intersection
+React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }
+```
+
+### 2. Type Safety with CVA
+```typescript
+// ✅ Good: Define variants with proper typing
+const buttonVariants = cva(
+  "base-classes",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground",
+        destructive: "bg-destructive text-white",
+        outline: "border bg-background",
+        secondary: "bg-secondary text-secondary-foreground",
+        ghost: "hover:bg-accent",
+        link: "text-primary underline-offset-4"
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 px-3",
+        lg: "h-10 px-6",
+        icon: "size-9"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+```
+
+## Styling Conventions
+
+### 1. Tailwind CSS Patterns
+```typescript
+// ✅ Good: Use semantic color tokens
+"bg-primary text-primary-foreground"
+"bg-destructive text-white"
+"bg-secondary text-secondary-foreground"
+"bg-muted text-muted-foreground"
+
+// ✅ Good: Use consistent spacing scale
+"h-9 px-4 py-2"      // default
+"h-8 px-3"           // small
+"h-10 px-6"          // large
+"size-9"              // icon size
+
+// ✅ Good: Use consistent border radius
+"rounded-md"          // consistent with design system
+"rounded-lg"          // larger radius for containers
+
+// ✅ Good: Use consistent shadows
+"shadow-xs"           // consistent shadow scale
+"shadow-sm"           // small shadow for active states
+```
+
+### 2. Advanced Tailwind Patterns
+```typescript
+// ✅ Good: Use arbitrary value selectors for complex states
+"[&_svg]:pointer-events-none"
+"[&_svg:not([class*='size-'])]:size-4"
+"[&_svg]:shrink-0"
+
+// ✅ Good: Use focus-visible for accessibility
+"focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+
+// ✅ Good: Use aria-invalid states
+"aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40"
+
+// ✅ Good: Use dark mode variants
+"dark:bg-destructive/60"
+"dark:bg-input/30 dark:border-input dark:hover:bg-input/50"
+```
+
+### 3. State Management in CSS
+```typescript
+// ✅ Good: Use hover states consistently
+"hover:bg-primary/90"
+"hover:bg-destructive/90"
+"hover:bg-accent hover:text-accent-foreground"
+
+// ✅ Good: Use disabled states
+"disabled:pointer-events-none disabled:opacity-50"
+
+// ✅ Good: Use transition for smooth interactions
+"transition-all"                    // For simple components
+"transition-[color,box-shadow]"     // For specific properties
+```
+
+### 4. Layout and Spacing
+```typescript
+// ✅ Good: Use consistent spacing patterns
+"gap-2"              // Container spacing
+"gap-1.5"            // Trigger spacing
+"p-[3px]"            // List padding
+"px-2 py-1"          // Trigger padding
+
+// ✅ Good: Use consistent sizing
+"h-9"                // List height
+"h-[calc(100%-1px)]" // Trigger height (relative to parent)
+"w-fit"              // List width
+"flex-1"             // Trigger flex growth
+```
+
+## Accessibility Patterns
+
+### 1. Focus Management
+```typescript
+// ✅ Good: Use focus-visible for keyboard navigation
+"focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+
+// ✅ Good: Use proper focus indicators
+"outline-none"  // Remove default outline
+"focus-visible:outline-ring focus-visible:outline-1"
+```
+
+### 2. ARIA States
+```typescript
+// ✅ Good: Handle invalid states
+"aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40"
+"aria-invalid:border-destructive"
+
+// ✅ Good: Use data attributes for component states
+"data-[state=active]:bg-background"
+"data-[state=active]:shadow-sm"
+"data-[state=active]:border-input"
+```
+
+### 3. Interactive States
+```typescript
+// ✅ Good: Disable pointer events when disabled
+"disabled:pointer-events-none disabled:opacity-50"
+
+// ✅ Good: Handle SVG interactions
+"[&_svg]:pointer-events-none"
+```
+
+## Icon Integration Patterns
+
+### 1. Icon Handling
+```typescript
+// ✅ Good: Prevent icon pointer events
+"[&_svg]:pointer-events-none"
+
+// ✅ Good: Prevent icon shrinking
+"[&_svg]:shrink-0"
+
+// ✅ Good: Set default icon size
+"[&_svg:not([class*='size-'])]:size-4"
+```
+
+### 2. Icon Spacing
+```typescript
+// ✅ Good: Adjust padding when icons are present
+"has-[>svg]:px-3"    // default size
+"has-[>svg]:px-2.5"  // small size
+"has-[>svg]:px-4"    // large size
+
+// ✅ Good: Use gap for consistent icon spacing
+"gap-2"              // default gap
+"gap-1.5"            // small gap
+```
+
+## Dark Mode Support
+
+### 1. Dark Mode Variants
+```typescript
+// ✅ Good: Use dark: prefix for dark mode styles
+"dark:bg-destructive/60"
+"dark:bg-input/30 dark:border-input dark:hover:bg-input/50"
+"dark:aria-invalid:ring-destructive/40"
+"dark:data-[state=active]:text-foreground"
+"dark:text-muted-foreground"
+```
+
+### 2. Consistent Dark Mode Patterns
+```typescript
+// ✅ Good: Apply dark mode to all state variants
+"dark:data-[state=active]:text-foreground"
+"dark:data-[state=active]:border-input"
+"dark:data-[state=active]:bg-input/30"
+"dark:focus-visible:ring-destructive/40"
+```
+
+## Utility Function Usage
+
+### 1. Class Name Merging
+```typescript
+// ✅ Good: Use cn utility for class merging
+import { cn } from "@/lib/utils/cn"
+
+// ✅ Good: Merge variants with custom className
+className={cn(buttonVariants({ variant, size, className }))}
+
+// ✅ Good: Merge base classes with custom className
+className={cn("base-classes", className)}
+```
+
+### 2. Variant Application
+```typescript
+// ✅ Good: Apply variants with proper parameters
+buttonVariants({ variant, size, className })
+
+// ✅ Good: Use destructured props
+const { className, variant, size, asChild = false, ...props } = props
+```
+
+## Data Attributes for Styling
+
+### 1. State-Based Styling
+```typescript
+// ✅ Good: Use data attributes for component states
+"data-[state=active]:bg-background"
+"data-[state=active]:shadow-sm"
+"data-[state=active]:border-input"
+"data-[state=active]:bg-input/30"
+```
+
+### 2. Slot Identification
+```typescript
+// ✅ Good: Use data-slot for component identification
+data-slot="button"
+data-slot="tabs"
+data-slot="tabs-list"
+data-slot="tabs-trigger"
+data-slot="tabs-content"
+```
+
+## Performance Considerations
+
+### 1. Transition Optimization
+```typescript
+// ✅ Good: Use specific transition properties
+"transition-[color,box-shadow]"
+
+// ✅ Good: Use transition-all for simple components
+"transition-all"
+
+// ✅ Good: Avoid unnecessary transitions
+// Only transition properties that change
+```
+
+### 2. CSS Property Selection
+```typescript
+// ✅ Good: Use calc() for dynamic sizing
+"h-[calc(100%-1px)]"
+
+// ✅ Good: Use efficient selectors
+"[&_svg]:pointer-events-none"
+```
+
+## Component Export Patterns
+
+### 1. Named Exports
+```typescript
+// ✅ Good: Export both component and variants
+export { Button, buttonVariants }
+
+// ✅ Good: Export all related components together
+export { Tabs, TabsList, TabsTrigger, TabsContent }
+
+// ✅ Good: Export variants for reuse
+export { buttonVariants }
+```
+
+### 2. Component Organization
+```typescript
+// ✅ Good: Group related components in one file
+// All tabs-related components in tabs.tsx
+
+// ✅ Good: Use consistent naming convention
+// ComponentName for wrapper, ComponentNamePrimitive for base
+```
+
+## Best Practices Summary
+
+### 1. Component Design
+- ✅ Use CVA for variant management when needed
+- ✅ Support polymorphic rendering with asChild
+- ✅ Use semantic color tokens
+- ✅ Implement proper accessibility states
+- ✅ Use consistent spacing and sizing
+- ✅ Support dark mode variants
+
+### 2. TypeScript Usage
+- ✅ Extend native HTML element props or Radix UI primitive props
+- ✅ Use VariantProps for CVA variants
+- ✅ Combine prop types with intersection
+- ✅ Provide proper default values
+
+### 3. Styling Approach
+- ✅ Use Tailwind CSS with design tokens
+- ✅ Implement consistent state management
+- ✅ Support dark mode variants
+- ✅ Use advanced Tailwind selectors for complex states
+
+### 4. Accessibility
+- ✅ Implement proper focus management
+- ✅ Handle ARIA states correctly
+- ✅ Support keyboard navigation
+- ✅ Provide visual feedback for states
+
+### 5. Performance
+- ✅ Use proper prop spreading
+- ✅ Implement conditional rendering efficiently
+- ✅ Use utility functions for class merging
+- ✅ Export variants for reuse
+
+## Common Anti-Patterns to Avoid
+
+### ❌ Don't
+```typescript
+// ❌ Don't: Use inline styles
+style={{ backgroundColor: 'red' }}
+
+// ❌ Don't: Hardcode colors
+"bg-blue-500 text-white"
+
+// ❌ Don't: Use inconsistent spacing
+"px-4 py-3"  // mixing different scales
+
+// ❌ Don't: Forget accessibility
+// Missing focus states or ARIA attributes
+
+// ❌ Don't: Export component without variants
+export { Button }  // Missing buttonVariants export
+
+// ❌ Don't: Forget dark mode support
+// Missing dark: variants
+
+// ❌ Don't: Use transition-all unnecessarily
+"transition-all"  // When only specific properties change
+```
+
+### ✅ Do
+```typescript
+// ✅ Do: Use semantic tokens
+"bg-primary text-primary-foreground"
+
+// ✅ Do: Use consistent spacing scale
+"px-4 py-2"  // consistent with design system
+
+// ✅ Do: Implement proper accessibility
+"focus-visible:ring-ring/50"
+
+// ✅ Do: Export both component and variants
+export { Button, buttonVariants }
+
+// ✅ Do: Support dark mode
+"dark:bg-destructive/60"
+
+// ✅ Do: Use specific transitions
+"transition-[color,box-shadow]"
+
+// ✅ Do: Use data attributes for states
+"data-[state=active]:bg-background"
+```
+
+## Integration with Design System
+
+### 1. Color Token Usage
+```typescript
+// ✅ Good: Use design system color tokens
+"bg-primary"
+"text-primary-foreground"
+"bg-destructive"
+"text-destructive-foreground"
+"bg-muted"
+"text-muted-foreground"
+"border-input"
+"ring-ring"
+
+// ✅ Good: Maintain consistency with other components
+// Same color tokens used across UI components
+```
+
+### 2. Spacing and Sizing
+```typescript
+// ✅ Good: Use consistent spacing scale
+"gap-2"
+"gap-1.5"
+"p-[3px]"
+"px-2 py-1"
+
+// ✅ Good: Use consistent sizing
+"h-9"
+"h-8"
+"h-10"
+"text-sm"
+"rounded-lg"
+"rounded-md"
+```
+---
+description: shadcn/ui component conventions and patterns used in the project's UI components
+globs: src/components/ui/**/*.tsx
+alwaysApply: false
+---

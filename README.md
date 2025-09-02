@@ -20,6 +20,8 @@ This project provides:
 - [Fumadocs Integration](docs/fumadocs-integration.md) - How PayloadCMS and Fumadocs work together
 - [Integration Summary](docs/integration-summary.md) - Quick reference guide
 - [Fumadocs Utils](docs/fumadocs-utils.md) - Integration utilities and implementation details
+- [Seed Content](docs/seed-content.md) - PayloadCMS + Fumadocs Seeding Service
+- [Cursor Rules Guide](docs/cursor-rules-guide.md) - How to generate and maintain Cursor rules for the project
 
 ## Quick Start - local setup
 

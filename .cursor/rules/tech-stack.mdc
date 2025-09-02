@@ -1,0 +1,270 @@
+---
+description: Application stack, dependencies, versions, and best practices for PayloadCMS + Fumadocs integration
+globs: **/*
+alwaysApply: false
+---
+# Application Stack & Dependencies
+
+This rule documents the technology stack, dependency versions, and best practices for the PayloadCMS + Fumadocs integration project.
+
+## Technology Stack Overview
+
+The application is built on a modern, full-stack JavaScript/TypeScript stack with the following core technologies:
+
+- **Framework**: Next.js 15.3.2 (App Router)
+- **CMS**: PayloadCMS 3.52.0
+- **Database**: PostgreSQL (via @payloadcms/db-postgres)
+- **Documentation**: Fumadocs 15.6.5
+- **Styling**: Tailwind CSS 4.1.11
+- **Testing**: Vitest + Playwright
+- **Package Manager**: PNPM
+
+## Core Dependencies
+
+### Frontend Framework
+```json
+{
+  "next": "15.3.2",
+  "react": "19.1.1",
+  "react-dom": "19.1.2"
+}
+```
+
+**Best Practices:**
+- ✅ **Next.js 15.3.2**: Latest stable version with App Router and React 19 support
+- ✅ **React 19.1.1**: Latest React version with concurrent features and improved performance
+- ⚠️ **React 19**: New major version - ensure compatibility with all dependencies
+- 🔄 **App Router**: Use modern Next.js patterns, avoid Pages Router patterns
+
+### Content Management System
+```json
+{
+  "payload": "3.52.0",
+  "@payloadcms/next": "3.52.0",
+  "@payloadcms/db-postgres": "3.52.0",
+  "@payloadcms/richtext-lexical": "3.52.0",
+  "@payloadcms/ui": "3.52.0"
+}
+```
+
+**Best Practices:**
+- ✅ **PayloadCMS 3.52.0**: Latest stable version with TypeScript-first approach
+- ✅ **PostgreSQL**: Production-ready database with ACID compliance
+- ✅ **Lexical Editor**: Modern rich text editor (replaces Slate)
+- 🔄 **Type Generation**: Run `pnpm generate:types` after schema changes
+- 🔄 **Import Map**: Run `pnpm generate:importmap` for admin customizations
+
+### Documentation System
+```json
+{
+  "fumadocs-core": "^15.6.5",
+  "fumadocs-ui": "^15.6.5"
+}
+```
+
+**Best Practices:**
+- ✅ **Fumadocs 15.6.5**: Latest version with MDX support and React 19 compatibility
+- 🔄 **Core + UI**: Separate packages for flexibility and tree-shaking
+- 🔄 **MDX Support**: Use MDX for dynamic documentation content
+
+### Styling & UI
+```json
+{
+  "tailwindcss": "^4.1.11",
+  "@tailwindcss/postcss": "^4.1.11",
+  "postcss": "^8.5.6",
+  "@radix-ui/react-accordion": "^1.2.12",
+  "@radix-ui/react-collapsible": "^1.1.12",
+  "@radix-ui/react-tabs": "^1.1.13",
+  "class-variance-authority": "^0.7.1",
+  "tailwind-merge": "^3.3.1"
+}
+```
+
+**Best Practices:**
+- ✅ **Tailwind CSS 4.1.11**: Latest version with improved performance
+- ✅ **Radix UI**: Accessible, unstyled components for consistent UX
+- ✅ **CVA**: Type-safe component variants with Tailwind
+- 🔄 **PostCSS 8**: Modern CSS processing with Tailwind 4
+- 🔄 **Component Library**: Build on Radix primitives, avoid custom implementations
+
+### Development Tools
+```json
+{
+  "typescript": "5.7.3",
+  "eslint": "^9.16.0",
+  "eslint-config-next": "15.3.0",
+  "prettier": "^3.4.2",
+  "cross-env": "^7.0.3"
+}
+```
+
+**Best Practices:**
+- ✅ **TypeScript 5.7.3**: Latest stable version with improved type inference
+- ✅ **ESLint 9**: Latest version with better performance and rules
+- ✅ **Next.js ESLint Config**: Optimized for Next.js applications
+- 🔄 **Cross-env**: Ensures script compatibility across platforms
+- 🔄 **Type Safety**: Leverage TypeScript strict mode and advanced features
+
+### Testing Stack
+```json
+{
+  "vitest": "3.2.3",
+  "@playwright/test": "1.50.0",
+  "@testing-library/react": "16.3.0",
+  "jsdom": "26.1.0"
+}
+```
+
+**Best Practices:**
+- ✅ **Vitest 3.2.3**: Fast unit testing with Vite integration
+- ✅ **Playwright 1.50.0**: Reliable E2E testing across browsers
+- ✅ **Testing Library 16.3.0**: Latest version with React 19 support
+- 🔄 **Test Coverage**: Aim for >80% coverage on critical paths
+- 🔄 **E2E Tests**: Focus on user workflows, not implementation details
+
+### Build & Performance
+```json
+{
+  "sharp": "0.34.2",
+  "graphql": "^16.8.1",
+  "lucide-react": "^0.539.0"
+}
+```
+
+**Best Practices:**
+- ✅ **Sharp 0.34.2**: Latest version for image optimization
+- ✅ **GraphQL**: Use for complex data fetching and real-time updates
+- ✅ **Lucide Icons**: Consistent icon system with tree-shaking
+- 🔄 **Image Optimization**: Leverage Sharp for responsive images
+- 🔄 **Bundle Size**: Monitor with `@next/bundle-analyzer`
+
+## Version Management Strategy
+
+### Fixed vs Range Versions
+- **Fixed**: Core framework versions (Next.js, React, PayloadCMS)
+- **Caret (^)**: UI libraries and utilities (Radix, Fumadocs)
+- **Tilde (~)**: Patch updates only (when needed)
+
+### Update Strategy
+1. **Monthly**: Check for security updates
+2. **Quarterly**: Review major version updates
+3. **Immediate**: Security patches and critical fixes
+
+### Compatibility Matrix
+```
+Node.js: ^18.20.2 || >=20.9.0
+PNPM: ^9 || ^10
+Next.js: 15.3.2 (requires React 19)
+React: 19.1.1 (latest stable)
+PayloadCMS: 3.52.0 (latest stable)
+```
+
+## Development Scripts
+
+### Core Commands
+```bash
+# Development
+pnpm dev              # Start development server
+pnpm devsafe          # Clean start (removes .next)
+
+# Build & Deploy
+pnpm build            # Production build
+pnpm start            # Production server
+
+# CMS Management
+pnpm generate:types   # Generate PayloadCMS types
+pnpm generate:importmap # Generate admin import map
+pnpm seed             # Seed database with sample data
+
+# Testing
+pnpm test             # Run all tests
+pnpm test:int         # Integration tests
+pnpm test:e2e         # End-to-end tests
+
+# Database
+pnpm start:postgres   # Start PostgreSQL container
+pnpm stop:postgres    # Stop PostgreSQL container
+```
+
+### Environment Configuration
+```bash
+# Required environment variables
+DATABASE_URL=postgresql://...
+PAYLOAD_SECRET=...
+NEXT_PUBLIC_SERVER_URL=...
+
+# Optional
+PAYLOAD_PUBLIC_SITE_URL=...
+PAYLOAD_PUBLIC_SITE_NAME=...
+```
+
+## Best Practices & Recommendations
+
+### 1. TypeScript Configuration
+- Use strict mode for better type safety
+- Leverage PayloadCMS generated types
+- Implement proper error handling with typed errors
+
+### 2. Performance Optimization
+- Use Next.js Image component with Sharp optimization
+- Implement proper caching strategies
+- Monitor bundle size with bundle analyzer
+
+### 3. Security
+- Keep dependencies updated for security patches
+- Use environment variables for sensitive data
+- Implement proper authentication and authorization
+
+### 4. Testing Strategy
+- Unit tests for utilities and hooks
+- Integration tests for API endpoints
+- E2E tests for critical user journeys
+
+### 5. Database Management
+- Use migrations for schema changes
+- Implement proper indexing strategies
+- Regular backups and monitoring
+
+### 6. Development Workflow
+- Use PNPM for faster, more efficient package management
+- Leverage TypeScript for better developer experience
+- Follow Next.js App Router best practices
+
+## Dependency Health Monitoring
+
+### Security Audits
+```bash
+pnpm audit              # Check for security vulnerabilities
+pnpm audit --fix        # Auto-fix compatible vulnerabilities
+```
+
+### Outdated Dependencies
+```bash
+pnpm outdated           # Check for outdated packages
+pnpm update             # Update within version ranges
+```
+
+### Bundle Analysis
+```bash
+# Add to package.json scripts
+"analyze": "cross-env ANALYZE=true next build"
+```
+
+## Migration Notes
+
+### React 19 Compatibility
+- Ensure all dependencies support React 19
+- Test concurrent features and Suspense boundaries
+- Verify server components work correctly
+
+### PayloadCMS 3.x
+- Use new collection and field APIs
+- Leverage improved TypeScript support
+- Implement proper error handling patterns
+
+### Next.js 15
+- Use App Router patterns exclusively
+- Implement proper metadata API usage
+- Leverage improved performance features
+
