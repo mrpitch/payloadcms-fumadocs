@@ -80,7 +80,7 @@ export function Banner({
           }}
           className={cn(
             buttonVariants({
-              color: 'ghost',
+              variant: 'ghost',
               className: 'absolute end-2 top-1/2 -translate-y-1/2 text-fd-muted-foreground',
               size: 'icon',
             }),

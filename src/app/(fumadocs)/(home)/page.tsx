@@ -3,7 +3,8 @@ import { getAllByCollection, getCollectionBySlug } from '@/lib/utils/getCollecti
 import { Cards, Card } from '@/components/card'
 import { notFound } from 'next/navigation'
 import { getDocsMenu } from '@/lib/utils/getMenu'
-import {getGlobals} from '@/lib/utils/getGlobals'
+import { getGlobals } from '@/lib/utils/getGlobals'
+import { Button } from '@/components/ui/button'
 export default async function HomePage() {
   const items = await getAllByCollection('docs')
 
